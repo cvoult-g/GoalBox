@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
 
-  
 :root {
     --background-dark: #332f35;
     --container-background: #1f1c23;
@@ -19,7 +18,7 @@
     font-optical-sizing: auto;
     font-style: normal;
     font-weight: normal;
-  }
+}
 
 body {
     background: var(--background-dark);
