@@ -229,7 +229,7 @@ a, a:visited {
 }
 
 .chart-container, .timer-container {
-    flex: 1 1 calc(50% - 10px); /* Distribuye los espacios igual en dos columnas si el espacio lo permite */
+    flex: 1 1 calc(33.33% - 10px); /* Distribuye los espacios en tres columnas */
     padding: 12px;
     background-color: var(--container-background);
     border-radius: 5px;
