@@ -208,33 +208,6 @@
             border-bottom: none;
         }
 
-        @media (max-width: 650px) {
-            .container {
-                width: 95%;
-                margin: 10px auto;
-            }
-
-            .nuevoAhorro {
-                flex-direction: column;
-            }
-
-            .menu-container {
-                flex-direction: column;
-            }
-
-            .menu-container button {
-                width: 100%;
-            }
-
-            .chart-container, .timer-container {
-                width: 100%;
-            }
-        
-            .charts-container {
-                flex-direction: column;
-            }
-        }
-
         a, a:visited {
             color: #eaeaea;
             text-decoration: none;
@@ -245,15 +218,18 @@
             display: flex;
             justify-content: space-between;
             gap: 20px;
-            padding: 20px 0;
-        }
+            width: 100%;
+        }        
 
         .chart-container, .timer-container {
-            width: calc(50% - 10px);
+            flex: 1;
             padding: 12px;
             background-color: var(--container-background);
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 300px; /* Establece un mínimo para la columna */
+            max-width: calc(33.333% - 20px);
+            box-sizing: border-box;
         }
 
         #progressChart, #cuentaRegresiva {
@@ -265,8 +241,8 @@
         }
         
         .timer-container {
-            padding: 20px;
             text-align: center;
+            background-color: #e0e0e0;
         }
         
         .progress-container {
@@ -283,3 +259,36 @@
             color: #333;
         }
 
+
+        @media (max-width: 900px) {
+            .chart-container, .timer-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .nuevoAhorro {
+                flex-direction: column;
+            }
+
+            .menu-container {
+                flex-direction: column;
+            }
+
+            .menu-container button {
+                width: 100%;
+            }
+
+            .chart-container, .timer-container {
+                max-width: 100%;
+                width: 100%;
+            }
+        
+            .charts-container {
+                flex-direction: column;
+            }
+        }
