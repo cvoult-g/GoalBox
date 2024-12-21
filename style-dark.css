@@ -223,7 +223,7 @@ a, a:visited {
 #progressChart, #cuentaRegresiva {
     width: 100%;
     height: auto; /* Permite la adaptación de la altura según contenido */
-    max-width: 400px; /* Tamaño máximo deseado */
+    max-width: 150px; /* Tamaño máximo deseado */
     margin: 0 auto 20px auto; /* Espacio alrededor de los charts y centrándolos */
     background-color: #f3f3f3;
     border: 1px solid #ccc;
