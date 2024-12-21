@@ -16,19 +16,19 @@
         <h1>Gestión de Ahorro</h1>
 
         <div class="menu-container">
-            <button onclick="exportarJSON()" class="export-btn light-btn>
+            <button onclick="exportarJSON()" class="export-btn">
                 <i class="fas fa-download"></i> Exportar
             </button>
-            <button onclick="mostrarMenu('importar')" class="import-btn light-btn">
+            <button onclick="mostrarMenu('importar')" class="import-btn">
                 <i class="fas fa-upload"></i> Importar
             </button>
-            <button onclick="guardarProgreso()" class="save-btn light-btn">
+            <button onclick="guardarProgreso()" class="save-btn">
                 <i class="fas fa-save"></i> Guardar
             </button>
-            <button onclick="cargarProgreso()" class="load-btn light-btn">
+            <button onclick="cargarProgreso()" class="load-btn">
                 <i class="fas fa-sync-alt"></i> Cargar
             </button>
-            <button onclick="eliminarGuardado()" class="delete-btn light-btn">
+            <button onclick="eliminarGuardado()" class="delete-btn">
                 <i class="fas fa-trash"></i>
             </button>
         </div>
@@ -44,10 +44,10 @@
                 <div class="nuevoAhorro">
                     <input type="number" id="nuevoAhorro" min="0" step="0.01" placeholder="0.00">
                     <div class="add-min">
-                        <button type="button" onclick="manejarAhorro(true)" class="add-btn">
+                        <button type="button" onclick="manejarAhorro(true)" class="add-btn" aria-label="Añadir ahorro">
                             <i class="fas fa-plus"></i>
                         </button>
-                        <button type="button" onclick="manejarAhorro(false)" class="subtract-btn">
+                        <button type="button" onclick="manejarAhorro(false)" class="subtract-btn" aria-label="Reducir ahorro">
                             <i class="fas fa-minus"></i>
                         </button>
                     </div>
@@ -77,7 +77,7 @@
             <textarea id="jsonExportar" readonly></textarea>
             <div id="jsonExportarLink"></div>
             <div class="menu-buttons">
-                <button data-action="exportData" class="export-btn">
+                <button data-action="exportData" class="export-btn primary-btn">
                     <i class="fas fa-download"></i> Exportar
                 </button>
                 <button onclick="cerrarVentanaExportar()">
@@ -92,7 +92,7 @@
             <input type="file" id="importarArchivo" accept=".json">
             <textarea id="jsonImportar" placeholder="Pega aquí el contenido JSON..."></textarea>
             <div class="menu-buttons">
-                <button onclick="importarJSON()">
+                <button onclick="importarJSON()" class="primary-btn">
                     <i class="fas fa-file-upload"></i> Importar
                 </button>
                 <button onclick="cerrarVentanaImportar()">
