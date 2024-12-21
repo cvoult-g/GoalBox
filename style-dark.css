@@ -19,21 +19,20 @@ body {
     font-size: 16px;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100%;
+    margin-top: 3em;
     overflow-x: hidden;
 }
 
 .container {
-    width: 650px;  /* Ancho específico deseado */
+    width: 650px;
+    margin: 0 auto;
     padding: 20px;
     background-color: var(--container-background);
     color: var(--text-soft);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-family: 'Arial', sans-serif;
-    display: flex; /* Diseño en fila para mejor alineación */
-    flex-direction: column;
-    align-items: center; /* Alinear contenido verticalmente */
 }
 
 h1 {
@@ -114,13 +113,12 @@ button:hover {
     color: var(--container-background);
     font-weight: bold;
     line-height: 20px;
-    font-size: 12px;
 }
 
 .menu-container {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: nowrap;  /* Mantiene alineación en filas */
+    justify-content: space-around;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
 }
@@ -208,46 +206,10 @@ button:hover {
     border-bottom: none;
 }
 
-a, a:visited {
-    color: #eaeaea;
-    text-decoration: none;
-}
-
-#progressChart, #cuentaRegresiva {
-    width: 100%;
-    height: auto; /* Permite la adaptación de la altura según contenido */
-    max-width: 150px; /* Tamaño máximo deseado */
-    margin: 0 auto 20px auto; /* Centrado horizontal y espacio debajo */
-    background-color: #f3f3f3;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center; /* Centra el contenido dentro del gráfico */
-    align-items: center; /* Centra el contenido verticalmente */
-}
-
-.charts-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: nowrap; 
-    gap: 20px;
-    width: 100%;
-}
-
-.timer-container {
-    text-align: center;
-    background-color: #e0e0e0;
-}
-
-@media (max-width: 900px) {
-    .chart-container, .timer-container {
-        max-width: 100%;
-    }
-}
-
 @media (max-width: 650px) {
     .container {
-        flex-direction: column;
+        width: 95%;
+        margin: 10px auto;
     }
 
     .nuevoAhorro {
@@ -260,14 +222,5 @@ a, a:visited {
 
     .menu-container button {
         width: 100%;
-    }
-
-    .chart-container, .timer-container {
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .charts-container {
-        flex-direction: column;
     }
 }
