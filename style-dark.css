@@ -26,8 +26,10 @@ body {
 
 .container {
     width: 100%;
-    max-width: calc(33.333% + 10px);
-    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    flex-wrap: wrap;
     padding: 20px;
     background-color: var(--container-background);
     color: var(--text-soft);
