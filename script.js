@@ -131,7 +131,7 @@ class SavingsManager {
         }
     }
 
-    async exportData() {
+    exportData() {
         const exportData = {
             ahorro: this.state.ahorro,
             estadisticas: this.state.estadisticas,
@@ -153,9 +153,8 @@ class SavingsManager {
         }
     }
 
-    async importData(file) {
-        try {
-            const content = await this.readFileAsync(file);
+    importData(file) {
+        this.readFileAsync(file).then(content => {
             const data = JSON.parse(content);
 
             if (!this.validateImportData(data)) {
@@ -170,9 +169,9 @@ class SavingsManager {
             this.saveToLocalStorage();
             this.updateUI();
             this.showSuccess('Datos importados correctamente.');
-        } catch (error) {
+        }).catch(error => {
             this.showError(`Error al importar: ${error.message}`);
-        }
+        });
     }
 
     readFileAsync(file) {
