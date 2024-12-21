@@ -230,12 +230,12 @@
             text-decoration: none;
         }
 
-                /* Contenedor del gráfico */
+        /* Contenedor del gráfico */
         .chart-container {
-            width: 50%;
+            width: calc(100% - 650px - 20px);
             float: left;
             margin: 0 auto;
-            padding: 20px;
+            padding: 12px;
         }
 
         /* Estilo para el gráfico en canvas */
@@ -257,7 +257,7 @@
 
         /* Temporizador */
         .timer-container {
-            width: 45%;
+            width: calc(100% - 650px - 20px);
             padding: 20px;
             background-color: #e0e0e0;
             border-radius: 5px;
