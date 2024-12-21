@@ -94,8 +94,8 @@
             <input type="file" id="importarArchivo" accept=".json">
             <textarea id="jsonImportar" placeholder="Pega aquí el contenido JSON..."></textarea>
             <div class="menu-buttons">
-                <button onclick="importarJSON()">
-                    <i class="fas fa-file-upload"></i> Importar
+                <button data-action="exportData" class="export-btn">
+                <i class="fas fa-download"></i> Exportar
                 </button>
                 <button onclick="cerrarVentanaImportar()">
                     <i class="fas fa-times"></i> Cancelar
