@@ -33,6 +33,7 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-family: 'Arial', sans-serif;
     margin: auto; /* Centrar horizontalmente */
+    margin-top: 0;  /* Eliminar espacio adicional */
 }
 
 h1 {
@@ -236,6 +237,7 @@ a, a:visited {
 .timer-container {
     text-align: center;
     background-color: #e0e0e0;
+    margin-top: 0;  /* Evitar espacio adicional */
 }
 
 @media (max-width: 900px) {
