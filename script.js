@@ -1,205 +1,249 @@
-// Inicialización al cargar la página
-document.addEventListener('DOMContentLoaded', function() {
-    cargarProgreso();
-    actualizarListaEstadisticas();
-});
+import React, { useState, useEffect } from 'react';
+import { Download, Upload, Save, RefreshCw, Trash2, Plus, Minus, AlertTriangle, Check } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
-function mostrarMenu(tipo) {
-    const menuExportar = document.getElementById('menuExportar');
-    const menuImportar = document.getElementById('menuImportar');
+const SavingsManagement = () => {
+  const [currentSavings, setCurrentSavings] = useState('');
+  const [newSavings, setNewSavings] = useState('');
+  const [remainingSavings, setRemainingSavings] = useState(100);
+  const [message, setMessage] = useState('Ingresa tu primer ahorro para comenzar');
+  const [statistics, setStatistics] = useState([]);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showImportMenu, setShowImportMenu] = useState(false);
+  const [importText, setImportText] = useState('');
 
-    if (tipo === 'exportar') {
-        menuExportar.style.display = 'block';
-        menuImportar.style.display = 'none';
-    } else if (tipo === 'importar') {
-        menuExportar.style.display = 'none';
-        menuImportar.style.display = 'block';
+  useEffect(() => {
+    loadProgress();
+  }, []);
+
+  const handleSavings = (isAddition) => {
+    if (!newSavings || isNaN(newSavings) || parseFloat(newSavings) <= 0) {
+      setMessage('Por favor ingresa una cantidad válida');
+      return;
     }
-}
 
-function actualizarProgressBar(valor) {
-    const porcentaje = Math.min((valor / 100) * 100, 100);
-    const progressBar = document.getElementById('progressBar');
-    progressBar.style.width = porcentaje + '%';
-    progressBar.setAttribute('data-progress', Math.round(porcentaje));
-}
+    const current = parseFloat(currentSavings) || 0;
+    const amount = parseFloat(newSavings);
+    let newTotal = isAddition ? current + amount : Math.max(current - amount, 0);
+    newTotal = parseFloat(newTotal.toFixed(2));
 
-function manejarAhorro(isAddition) {
-    const ahorroActual = parseFloat(document.getElementById('ahorro').value) || 0;
-    const nuevoAhorro = parseFloat(document.getElementById('nuevoAhorro').value);
+    setCurrentSavings(newTotal);
+    setRemainingSavings(Math.max(100 - newTotal, 0));
+    setNewSavings('');
+    setMessage(`Has ahorrado ${newTotal.toFixed(2)}$ (${((newTotal / 100) * 100).toFixed(1)}% de tu meta)`);
+    
+    addToStatistics(newTotal);
+  };
 
-    if (!isNaN(nuevoAhorro) && nuevoAhorro > 0) {
-        let nuevoTotal = isAddition ? 
-            (ahorroActual + nuevoAhorro) : 
-            Math.max(ahorroActual - nuevoAhorro, 0);
-        
-        nuevoTotal = parseFloat(nuevoTotal.toFixed(2));
-        
-        document.getElementById('ahorro').value = nuevoTotal;
-        const falta = Math.max(100 - nuevoTotal, 0).toFixed(2);
-        document.getElementById('faltaPorAhorar').value = falta;
-        
-        actualizarProgressBar(nuevoTotal);
-        
-        document.getElementById('resultado').innerHTML = 
-            `Has ahorrado ${nuevoTotal.toFixed(2)}$ (${((nuevoTotal / 100) * 100).toFixed(1)}% de tu meta)`;
-        
-        guardarEnEstadisticas(nuevoTotal);
-        document.getElementById('nuevoAhorro').value = '';
-    } else {
-        manejarError('Por favor ingresa una cantidad válida.');
-    }
-}
-
-function guardarEnEstadisticas(ahorro) {
-    const fecha = new Date().toLocaleDateString('es-ES', {
+  const addToStatistics = (amount) => {
+    const newEntry = {
+      amount,
+      date: new Date().toLocaleDateString('es-ES', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
-    });
-    
-    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
-    estadisticas.push({ ahorro, fecha });
-    localStorage.setItem('estadisticas', JSON.stringify(estadisticas));
-    
-    actualizarListaEstadisticas();
-}
-
-function actualizarListaEstadisticas() {
-    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
-    const lista = document.getElementById('estadisticasList');
-    lista.innerHTML = '';
-    
-    estadisticas.slice(-10).reverse().forEach(item => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <i class="fas fa-chart-line"></i>
-            $${item.ahorro.toFixed(2)} 
-            <small>${item.fecha}</small>
-        `;
-        lista.appendChild(li);
-    });
-}
-
-function guardarProgreso() {
-    const ahorro = document.getElementById('ahorro').value;
-    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
-    localStorage.setItem('ahorro', JSON.stringify({ 
-        ahorro, 
-        estadisticas,
-        ultimaActualizacion: new Date().toISOString()
-    }));
-    
-    document.getElementById('resultado').innerHTML = 
-        '<i class="fas fa-check"></i> Progreso guardado correctamente';
-}
-
-function cargarProgreso() {
-    const datos = JSON.parse(localStorage.getItem('ahorro'));
-    if (datos) {
-        document.getElementById('ahorro').value = datos.ahorro;
-        const falta = Math.max(100 - parseFloat(datos.ahorro), 0).toFixed(2);
-        document.getElementById('faltaPorAhorar').value = falta;
-        
-        actualizarProgressBar(datos.ahorro);
-        actualizarListaEstadisticas();
-        
-        document.getElementById('resultado').innerHTML = 
-            `<i class="fas fa-sync-alt"></i> Datos cargados: ${new Date(datos.ultimaActualizacion).toLocaleDateString('es-ES')}`;
-    } else {
-        document.getElementById('resultado').innerHTML = 
-            '<i class="fas fa-exclamation-triangle"></i> No hay datos guardados';
-    }
-}
-
-function eliminarGuardado() {
-    if (confirm('¿Estás seguro de que deseas eliminar todo tu progreso guardado?')) {
-        localStorage.removeItem('ahorro');
-        localStorage.removeItem('estadisticas');
-        
-        document.getElementById('ahorro').value = '';
-        document.getElementById('faltaPorAhorar').value = '100';
-        document.getElementById('nuevoAhorro').value = '';
-        document.getElementById('estadisticasList').innerHTML = '';
-        
-        actualizarProgressBar(0);
-        
-        document.getElementById('resultado').innerHTML = 
-            '<i class="fas fa-trash"></i> Progreso eliminado correctamente';
-    }
-}
-
-function exportarJSON() {
-    const datos = {
-        ahorro: document.getElementById('ahorro').value,
-        estadisticas: JSON.parse(localStorage.getItem('estadisticas')) || [],
-        fecha_exportacion: new Date().toISOString()
+      })
     };
-    
-    const jsonString = JSON.stringify(datos, null, 2);
-    document.getElementById('jsonExportar').value = jsonString;
-    
-    const downloadLink = document.createElement('a');
-    downloadLink.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(jsonString);
-    downloadLink.download = 'mis_ahorros.json';
-    
-    document.getElementById('jsonExportarLink').innerHTML = '';
-    document.getElementById('jsonExportarLink').appendChild(downloadLink);
-    downloadLink.innerHTML = '<i class="fas fa-file-download"></i> Descargar JSON';
-    
-    mostrarMenu('exportar');
-}
+    const updatedStats = [...statistics, newEntry];
+    setStatistics(updatedStats);
+    localStorage.setItem('statistics', JSON.stringify(updatedStats));
+  };
 
-function importarJSON() {
-    const archivo = document.getElementById('importarArchivo').files[0];
-    const textoJSON = document.getElementById('jsonImportar').value;
+  const saveProgress = () => {
+    const data = {
+      currentSavings,
+      statistics,
+      lastUpdate: new Date().toISOString()
+    };
+    localStorage.setItem('savings', JSON.stringify(data));
+    setMessage('Progreso guardado correctamente');
+  };
 
-    if (archivo) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            procesarDatosImportados(e.target.result);
-        };
-        reader.readAsText(archivo);
-    } else if (textoJSON) {
-        procesarDatosImportados(textoJSON);
-    } else {
-        manejarError('Por favor selecciona un archivo o pega el contenido JSON');
+  const loadProgress = () => {
+    const savedData = localStorage.getItem('savings');
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      setCurrentSavings(data.currentSavings);
+      setStatistics(data.statistics || []);
+      setRemainingSavings(Math.max(100 - parseFloat(data.currentSavings), 0));
+      setMessage(`Datos cargados: ${new Date(data.lastUpdate).toLocaleDateString('es-ES')}`);
     }
-}
+  };
 
-function procesarDatosImportados(contenidoJSON) {
+  const deleteProgress = () => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar todo tu progreso guardado?')) {
+      localStorage.removeItem('savings');
+      localStorage.removeItem('statistics');
+      setCurrentSavings('');
+      setNewSavings('');
+      setRemainingSavings(100);
+      setStatistics([]);
+      setMessage('Progreso eliminado correctamente');
+    }
+  };
+
+  const exportData = () => {
+    const data = {
+      currentSavings,
+      statistics,
+      exportDate: new Date().toISOString()
+    };
+    const jsonString = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mis_ahorros.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportData = () => {
     try {
-        const datos = JSON.parse(contenidoJSON);
-        if (datos.ahorro !== undefined) {
-            localStorage.setItem('ahorro', JSON.stringify(datos));
-            localStorage.setItem('estadisticas', JSON.stringify(datos.estadisticas || []));
-            
-            cargarProgreso();
-            cerrarVentanaImportar();
-            
-            document.getElementById('resultado').innerHTML = 
-                '<i class="fas fa-check"></i> Datos importados correctamente';
-        } else {
-            manejarError('El formato del JSON no es válido');
-        }
+      const data = JSON.parse(importText);
+      if (data.currentSavings !== undefined) {
+        setCurrentSavings(data.currentSavings);
+        setStatistics(data.statistics || []);
+        setRemainingSavings(Math.max(100 - parseFloat(data.currentSavings), 0));
+        localStorage.setItem('savings', JSON.stringify(data));
+        setMessage('Datos importados correctamente');
+        setShowImportMenu(false);
+        setImportText('');
+      } else {
+        setMessage('El formato del JSON no es válido');
+      }
     } catch (e) {
-        manejarError('Error al procesar el archivo JSON');
+      setMessage('Error al procesar el archivo JSON');
     }
-}
+  };
 
-function cerrarVentanaImportar() {
-    document.getElementById('menuImportar').style.display = 'none';
-    document.getElementById('importarArchivo').value = '';
-    document.getElementById('jsonImportar').value = '';
-}
+  return (
+    <div className="min-h-screen bg-[#332f35] p-8">
+      <div className="max-w-2xl mx-auto">
+        <Card className="bg-[#1f1c23] text-[#a198a9] shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-[#928A99]">Gestión de Ahorro</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2 mb-6">
+              <button onClick={exportData} className="flex items-center gap-2 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95 transition-all">
+                <Download size={16} /> Exportar
+              </button>
+              <button onClick={() => setShowImportMenu(true)} className="flex items-center gap-2 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95 transition-all">
+                <Upload size={16} /> Importar
+              </button>
+              <button onClick={saveProgress} className="flex items-center gap-2 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95 transition-all">
+                <Save size={16} /> Guardar
+              </button>
+              <button onClick={loadProgress} className="flex items-center gap-2 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95 transition-all">
+                <RefreshCw size={16} /> Cargar
+              </button>
+              <button onClick={deleteProgress} className="flex items-center gap-2 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95 transition-all">
+                <Trash2 size={16} /> Eliminar
+              </button>
+            </div>
 
-function cerrarVentanaExportar() {
-    document.getElementById('menuExportar').style.display = 'none';
-}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm mb-1">Ahorro Actual ($):</label>
+                <input
+                  type="number"
+                  value={currentSavings}
+                  onChange={(e) => setCurrentSavings(e.target.value)}
+                  className="w-full p-2 bg-[#27232A] text-[#a198a9] rounded outline-none focus:ring-2 focus:ring-[#48A3A6]"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
 
-function manejarError(mensaje) {
-    document.getElementById('resultado').innerHTML = 
-        `<i class="fas fa-exclamation-triangle"></i> ${mensaje}`;
-}
+              <div>
+                <label className="block text-sm mb-1">Nuevo Ahorro ($):</label>
+                <div className="flex gap-2 flex-wrap">
+                  <input
+                    type="number"
+                    value={newSavings}
+                    onChange={(e) => setNewSavings(e.target.value)}
+                    className="flex-1 p-2 bg-[#27232A] text-[#a198a9] rounded outline-none focus:ring-2 focus:ring-[#48A3A6]"
+                    min="0"
+                    step="0.01"
+                  />
+                  <button onClick={() => handleSavings(true)} className="flex items-center gap-1 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95">
+                    <Plus size={16} /> Agregar
+                  </button>
+                  <button onClick={() => handleSavings(false)} className="flex items-center gap-1 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95">
+                    <Minus size={16} /> Restar
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm mb-1">Falta por Ahorrar ($):</label>
+                <input
+                  type="number"
+                  value={remainingSavings}
+                  className="w-full p-2 bg-[#27232A] text-[#a198a9] rounded"
+                  disabled
+                />
+              </div>
+
+              <div className="h-5 bg-[#E0F1F2] rounded overflow-hidden">
+                <div 
+                  className="h-full bg-[#3D8E91] transition-all duration-300"
+                  style={{ width: `${Math.min((parseFloat(currentSavings) / 100) * 100, 100)}%` }}
+                />
+              </div>
+
+              <Alert className="bg-[#27232A] border-none">
+                <AlertDescription>{message}</AlertDescription>
+              </Alert>
+
+              <div className="mt-6">
+                <h2 className="text-lg mb-3">Historial de Ahorros</h2>
+                <div className="bg-[#27232A] rounded p-4">
+                  {statistics.slice(-10).reverse().map((stat, index) => (
+                    <div key={index} className="py-2 border-b border-[#a198a9] last:border-0">
+                      ${stat.amount.toFixed(2)} <small>{stat.date}</small>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {showImportMenu && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <Card className="bg-[#1f1c23] text-[#a198a9] w-full max-w-md">
+              <CardHeader>
+                <CardTitle>Importar Datos</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <textarea
+                  value={importText}
+                  onChange={(e) => setImportText(e.target.value)}
+                  className="w-full h-40 p-2 bg-[#27232A] text-[#a198a9] rounded mb-4 resize-none"
+                  placeholder="Pega aquí el contenido JSON..."
+                />
+                <div className="flex gap-2">
+                  <button onClick={handleImportData} className="flex-1 flex items-center justify-center gap-2 bg-[#E3474A] text-white px-4 py-2 rounded hover:bg-opacity-95">
+                    <Upload size={16} /> Importar
+                  </button>
+                  <button onClick={() => setShowImportMenu(false)} className="flex-1 bg-gray-600 text-white px-4 py-2 rounded hover:bg-opacity-95">
+                    Cancelar
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SavingsManagement;
