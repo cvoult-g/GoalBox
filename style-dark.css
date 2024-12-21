@@ -13,12 +13,12 @@
     --menu-buttons-hover: #48A3A6;
 }
 
-
 body {
     background: var(--background-dark);
-    font-weight: 100;
+    font-style: normal;
     font-family: "League Spartan", serif;
-    margin: 0;
+    font-optical-sizing: auto;
+    font-weight: 100;
     color: var(--text-light);
     font-size: 16px;
     display: flex;
