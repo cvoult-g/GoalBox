@@ -351,7 +351,6 @@ a {
     display: flex;
     margin-left: 10px;
 }
-<<<<<<< HEAD
 
 .menu-buttons {
   align-items: unset;
@@ -363,11 +362,3 @@ a {
 .menuExportarJson {
   display: flex;
 }
-=======
-
-.menu-buttons {
-  align-items: unset;
-  display: flex;
-  justify-content: flex-end;
-}
->>>>>>> 080b88dad31137140cdb37746c468fc395fc92ec
