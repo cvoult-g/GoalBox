@@ -73,15 +73,19 @@ function actualizarListaEstadisticas() {
     lista.innerHTML = '';
     
     estadisticas.slice(-10).reverse().forEach(item => {
+        // Verificar si item.ahorro es un número válido antes de formatear
+        const ahorroFormatted = typeof item.ahorro === 'number' ? item.ahorro.toFixed(2) : '0.00';
+        
         const li = document.createElement('li');
         li.innerHTML = `
             <i class="fas fa-chart-line"></i>
-            $${item.ahorro.toFixed(2)} 
+            $${ahorroFormatted} 
             <small>${item.fecha}</small>
         `;
         lista.appendChild(li);
     });
 }
+
 
 function guardarProgreso() {
     const ahorro = document.getElementById('ahorro').value;
