@@ -293,6 +293,13 @@ a {
   }
 }
 
+.jsonExportarLink {
+  margin-bottom: 10px;
+  align-items: unset;
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* Media Queries */
 @media (max-width: 650px) {
   body {
@@ -343,4 +350,10 @@ a {
 .add-min {
     display: flex;
     margin-left: 10px;
+}
+
+.menu-buttons {
+  align-items: unset;
+  display: flex;
+  justify-content: flex-end;
 }
