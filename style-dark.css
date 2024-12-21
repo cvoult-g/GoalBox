@@ -233,6 +233,7 @@ a, a:visited {
 .timer-container {
     text-align: center;
     background-color: #e0e0e0;
+    
 }
 
 @media (max-width: 900px) {
