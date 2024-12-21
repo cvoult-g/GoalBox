@@ -113,6 +113,7 @@ button:hover {
     color: var(--container-background);
     font-weight: bold;
     line-height: 20px;
+    font-size: 12px;
 }
 
 .menu-container {
@@ -204,6 +205,19 @@ button:hover {
 
 #estadisticasList li:last-child {
     border-bottom: none;
+}
+
+a, a:visited {
+    color: #eaeaea;
+    text-decoration: none;
+}
+
+p a, strong a, .text-link, .user-link, a.permalink, .comment-html a {
+    border-bottom: dotted 1px transparent;
+
+    &:hover {
+        border-bottom: dotted 1px color(base,foreground,text);
+    }
 }
 
 @media (max-width: 650px) {
