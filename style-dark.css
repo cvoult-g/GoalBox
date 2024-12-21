@@ -352,7 +352,7 @@ a {
     margin-left: 10px;
 }
 
-.menu-buttons {
+.menu-buttons, #menuImportar .menu-buttons {
   align-items: unset;
   display: flex;
   justify-content: flex-end;
@@ -361,4 +361,6 @@ a {
 
 .menuExportarJson {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
