@@ -31,9 +31,9 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-family: 'Arial', sans-serif;
-    margin: auto; /* Centrar horizontalmente */
-    display: flex;
-    flex-direction: row;  /* Alineación en filas */
+    display: flex; /* Diseño en fila para mejor alineación */
+    flex-direction: column;
+    align-items: center; /* Alinear contenido verticalmente */
 }
 
 h1 {
@@ -237,7 +237,6 @@ a, a:visited {
 .timer-container {
     text-align: center;
     background-color: #e0e0e0;
-    margin-top: 0;  /* Evitar espacio adicional */
 }
 
 @media (max-width: 900px) {
