@@ -239,7 +239,7 @@ button:active {
     background-color: var(--color-surface-variant);
     color: var(--color-text-primary);
     resize: none;
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin: var(--spacing-md) 0;
     font-family: inherit;
     transition: border-color var(--transition-fast);
