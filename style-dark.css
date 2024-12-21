@@ -1,5 +1,6 @@
 /* Importación de fuentes con preload para mejor rendimiento */
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan&display=swap');
 
 /* Variables CSS con esquema de color mejorado y sistema de diseño */
 :root {
@@ -216,6 +217,8 @@ button:active {
 
 /* Menú flotante */
 .menu-flotante {
+  font-family: "Source Code Pro", serif, monospace;
+  font-weight: 400;
   position: fixed;
   top: 50%;
   left: 50%;
