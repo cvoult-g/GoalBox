@@ -229,3 +229,45 @@
             color: #eaeaea;
             text-decoration: none;
         }
+
+                /* Contenedor del gráfico */
+        .chart-container {
+            width: 50%;
+            float: left;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilo para el gráfico en canvas */
+        #progressChart {
+            width: 100%;
+            height: 300px;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Ajuste para el contenedor de gráficos y temporizador */
+        .charts-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        /* Temporizador */
+        .timer-container {
+            width: 45%;
+            padding: 20px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #cuentaRegresiva {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
