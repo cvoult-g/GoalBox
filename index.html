@@ -72,10 +72,12 @@
         <div class="menu-flotante" id="menuExportar" style="display:none;">
             <h3>Exportar Datos</h3>
             <textarea id="jsonExportar" readonly></textarea>
-            <div id="jsonExportarLink"></div>
-            <div class="menu-buttons">
-                <button onclick="cerrarVentanaExportar()">Cancelar</button>
-                <button onclick="exportarJSON()" class="primary-btn">Exportar</button>
+            <div class="menuExportarJson">
+                <div id="jsonExportarLink"></div>
+                <div class="menu-buttons">
+                    <button onclick="cerrarVentanaExportar()">Cancelar</button>
+                    <button onclick="exportarJSON()" class="primary-btn">Exportar</button>
+                </div>
             </div>
         </div>
 
