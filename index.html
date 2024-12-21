@@ -15,12 +15,6 @@
         <div class="chart-container">
             <canvas id="progressChart"></canvas>
         </div>
-        <div class="timer-container">
-            <h3>Contador Regresivo</h3>
-            <input type="datetime-local" id="fechaMeta">
-            <button onclick="iniciarTemporizador()">Iniciar Temporizador</button>
-            <div id="cuentaRegresiva"></div>
-        </div>
     </div>
 
     <div class="container">
@@ -116,6 +110,14 @@
             </div>
         </div>
     </div>
-
+    <!-- Div contenedor para gráficos a los lados -->
+    <div class="charts-container">
+        <div class="timer-container">
+            <h3>Contador Regresivo</h3>
+            <input type="datetime-local" id="fechaMeta">
+            <button onclick="iniciarTemporizador()">Iniciar Temporizador</button>
+            <div id="cuentaRegresiva"></div>
+        </div>
+    </div>
 </body>
 </html>

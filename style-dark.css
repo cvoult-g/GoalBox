@@ -18,14 +18,13 @@ body {
     color: var(--text-light);
     font-size: 16px;
     display: flex;
-    flex-direction: column;
     min-height: 100%;
     margin-top: 3em;
     overflow-x: hidden;
 }
 
 .container {
-    width: 100%;
+    width: calc(33.33% - 10px);
     flex: 1 1 calc(33.33% - 10px); 
     padding: 20px;
     background-color: var(--container-background);
@@ -230,7 +229,7 @@ a, a:visited {
 }
 
 .chart-container, .timer-container {
-    flex: 1 1 calc(33.33% - 10px); 
+    flex: 1 1 calc(33.33% - 25px); 
     padding: 12px;
     background-color: var(--container-background);
     border-radius: 5px;
