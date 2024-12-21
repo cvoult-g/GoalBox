@@ -133,8 +133,6 @@ button {
     font-weight: 500;
     border: none;
     border-radius: var(--border-radius-sm); /* Border radius más sutil */
-    background-color: var(--color-primary);
-    color: white;
     cursor: pointer;
     transition: all var(--transition-fast);
     gap: 0.5rem; /* Espacio entre icono y texto */
@@ -149,6 +147,12 @@ button {
   button:active {
     background-color: var(--color-primary-active);
     transform: translateY(0);
+  }
+
+  light-btn {
+    background-color: var(--color-primary);
+    color: white;
+    transition: all var(--transition-fast);
   }
 
 /* Iconos */
@@ -305,4 +309,15 @@ a {
   background-color: var(--color-surface-variant);
   border-radius: var(--border-radius-sm);
   border-left: 3px solid var(--color-primary);
+}
+
+.nuevoAhorro {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.add-min {
+    display: flex;
+    margin-left: 10px;
 }
