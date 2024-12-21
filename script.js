@@ -1,157 +1,221 @@
+// Constantes de configuración
+const CONFIG = {
+    META_AHORRO: 100,
+    MAX_HISTORIAL: 10,
+    FORMATO_FECHA: {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }
+};
+
+// Clase principal para gestionar el estado de la aplicación
 class SavingsManager {
     constructor() {
-        this.currentSavings = 0;
-        this.goal = 100;
-        this.history = [];
+        this.state = {
+            ahorro: 0,
+            estadisticas: []
+        };
         this.init();
     }
 
     init() {
-        // Inicializa los elementos y eventos
-        this.ahorroInput = document.getElementById("ahorro");
-        this.nuevoAhorroInput = document.getElementById("nuevoAhorro");
-        this.faltaPorAhorarInput = document.getElementById("faltaPorAhorar");
-        this.progressBar = document.getElementById("progressBar");
-        this.resultadoDiv = document.getElementById("resultado");
-        this.estadisticasList = document.getElementById("estadisticasList");
-
+        this.loadFromLocalStorage();
         this.setupEventListeners();
         this.updateUI();
     }
 
     setupEventListeners() {
-        document.getElementById("nuevoAhorro").addEventListener("input", () => this.updateInputFields());
-        document.querySelector(".add-btn").addEventListener("click", () => this.manejarAhorro(true));
-        document.querySelector(".subtract-btn").addEventListener("click", () => this.manejarAhorro(false));
-    }
+        document.addEventListener('DOMContentLoaded', () => {
+            this.updateUI();
+        });
 
-    manejarAhorro(isAdding) {
-        const nuevoAhorro = parseFloat(this.nuevoAhorroInput.value) || 0;
-
-        if (nuevoAhorro <= 0) {
-            alert("Ingresa una cantidad válida.");
-            return;
-        }
-
-        if (isAdding) {
-            this.currentSavings += nuevoAhorro;
-            this.history.push(`Agregaste $${nuevoAhorro.toFixed(2)}`);
-        } else {
-            if (this.currentSavings < nuevoAhorro) {
-                alert("No puedes restar más de lo que tienes ahorrado.");
-                return;
+        document.querySelector('.menu-container').addEventListener('click', (e) => {
+            const action = e.target.closest('button')?.dataset.action;
+            if (action && this[action]) {
+                this[action]();
             }
-            this.currentSavings -= nuevoAhorro;
-            this.history.push(`Restaste $${nuevoAhorro.toFixed(2)}`);
-        }
+        });
 
-        this.updateUI();
-    }
+        document.getElementById('ahorroForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nuevoAhorro = document.getElementById('nuevoAhorro').value;
+            const isAddition = e.submitter.classList.contains('add-btn');
+            this.updateSavings(nuevoAhorro, isAddition);
+        });
 
-    updateInputFields() {
-        this.faltaPorAhorarInput.value = Math.max(this.goal - this.currentSavings, 0).toFixed(2);
-    }
-
-    updateUI() {
-        this.ahorroInput.value = this.currentSavings.toFixed(2);
-        this.updateInputFields();
-        this.updateProgressBar();
-        this.updateHistory();
-        this.updateMessage();
-    }
-
-    updateProgressBar() {
-        const progress = Math.min((this.currentSavings / this.goal) * 100, 100);
-        this.progressBar.style.width = `${progress}%`;
-        this.progressBar.setAttribute("data-progress", progress.toFixed(2));
-    }
-
-    updateHistory() {
-        this.estadisticasList.innerHTML = "";
-        this.history.forEach((entry) => {
-            const li = document.createElement("li");
-            li.textContent = entry;
-            this.estadisticasList.appendChild(li);
+        document.getElementById('importarArchivo').addEventListener('change', (e) => {
+            this.importData(e.target.files[0]);
         });
     }
 
-    updateMessage() {
-        if (this.currentSavings >= this.goal) {
-            this.resultadoDiv.textContent = "¡Felicidades! Has alcanzado tu meta de ahorro.";
-        } else {
-            const falta = this.goal - this.currentSavings;
-            this.resultadoDiv.textContent = `Te faltan $${falta.toFixed(2)} para alcanzar tu meta.`;
+    updateSavings(amount, isAddition) {
+        const currentSavings = parseFloat(this.state.ahorro) || 0;
+        const newAmount = parseFloat(amount);
+
+        if (isNaN(newAmount) || newAmount <= 0) {
+            this.showError('Por favor ingresa una cantidad válida.');
+            return;
+        }
+
+        this.state.ahorro = isAddition
+            ? parseFloat((currentSavings + newAmount).toFixed(2))
+            : parseFloat(Math.max(currentSavings - newAmount, 0).toFixed(2));
+
+        this.addToStatistics(this.state.ahorro);
+        this.updateUI();
+        this.saveToLocalStorage();
+    }
+
+    addToStatistics(ahorro) {
+        const date = new Date().toLocaleDateString('es-ES', CONFIG.FORMATO_FECHA);
+        this.state.estadisticas.push({ fecha: date, ahorro });
+        if (this.state.estadisticas.length > CONFIG.MAX_HISTORIAL) {
+            this.state.estadisticas.shift();
         }
     }
 
-    exportarJSON() {
-        const data = {
-            ahorroActual: this.currentSavings,
-            meta: this.goal,
-            historial: this.history,
-        };
-        const json = JSON.stringify(data, null, 2);
-        const blob = new Blob([json], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "ahorros.json";
-        a.click();
+    updateUI() {
+        this.updateInputFields();
+        this.updateProgressBar();
+        this.updateStatisticsList();
+        this.updateResultMessage();
     }
 
-    importarJSON(jsonData) {
+    updateInputFields() {
+        document.getElementById('ahorro').value = this.state.ahorro;
+        const faltaPorAhorar = Math.max(CONFIG.META_AHORRO - this.state.ahorro, 0);
+        document.getElementById('faltaPorAhorar').value = faltaPorAhorar.toFixed(2);
+    }
+
+    updateProgressBar() {
+        const percentage = Math.min((this.state.ahorro / CONFIG.META_AHORRO) * 100, 100);
+        const progressBar = document.getElementById('progressBar');
+        progressBar.style.width = `${percentage}%`;
+        progressBar.setAttribute('data-progress', Math.round(percentage));
+    }
+
+    updateStatisticsList() {
+        const lista = document.getElementById('estadisticasList');
+        lista.innerHTML = this.state.estadisticas
+            .slice(-CONFIG.MAX_HISTORIAL)
+            .reverse()
+            .map(item => `<li>${item.fecha}: $${item.ahorro}</li>`)
+            .join('');
+    }
+
+    saveToLocalStorage() {
+        const dataToSave = {
+            ahorro: this.state.ahorro,
+            estadisticas: this.state.estadisticas,
+            ultimaActualizacion: new Date().toISOString()
+        };
+        localStorage.setItem('ahorro', JSON.stringify(dataToSave));
+        this.showSuccess('Progreso guardado correctamente');
+    }
+
+    loadFromLocalStorage() {
         try {
-            const data = JSON.parse(jsonData);
-            if (data.ahorroActual !== undefined && data.meta !== undefined && Array.isArray(data.historial)) {
-                this.currentSavings = data.ahorroActual;
-                this.goal = data.meta;
-                this.history = data.historial;
-                this.updateUI();
-            } else {
-                alert("El archivo JSON no es válido.");
+            const saved = JSON.parse(localStorage.getItem('ahorro'));
+            if (saved) {
+                this.state = {
+                    ahorro: parseFloat(saved.ahorro) || 0,
+                    estadisticas: saved.estadisticas || []
+                };
+                this.showSuccess(`Datos cargados: ${new Date(saved.ultimaActualizacion).toLocaleDateString('es-ES')}`);
             }
         } catch (error) {
-            alert("Error al importar el archivo JSON.");
+            this.showError('Error al cargar los datos guardados.');
         }
     }
 
-    guardarProgreso() {
-        const data = {
-            ahorroActual: this.currentSavings,
-            meta: this.goal,
-            historial: this.history,
+    async exportData() {
+        const exportData = {
+            ahorro: this.state.ahorro,
+            estadisticas: this.state.estadisticas,
+            fecha_exportacion: new Date().toISOString()
         };
-        localStorage.setItem("ahorros", JSON.stringify(data));
-        alert("Progreso guardado con éxito.");
-    }
 
-    cargarProgreso() {
-        const savedData = localStorage.getItem("ahorros");
-        if (savedData) {
-            this.importarJSON(savedData);
-            alert("Progreso cargado con éxito.");
-        } else {
-            alert("No hay progreso guardado.");
+        try {
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `mis_ahorros_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            this.showError('Error al exportar los datos.');
         }
     }
 
-    eliminarGuardado() {
-        localStorage.removeItem("ahorros");
-        alert("Progreso eliminado.");
+    async importData(file) {
+        try {
+            const content = await this.readFileAsync(file);
+            const data = JSON.parse(content);
+
+            if (!this.validateImportData(data)) {
+                throw new Error('Formato de datos inválido.');
+            }
+
+            this.state = {
+                ahorro: parseFloat(data.ahorro) || 0,
+                estadisticas: data.estadisticas || []
+            };
+
+            this.saveToLocalStorage();
+            this.updateUI();
+            this.showSuccess('Datos importados correctamente.');
+        } catch (error) {
+            this.showError(`Error al importar: ${error.message}`);
+        }
+    }
+
+    readFileAsync(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsText(file);
+        });
+    }
+
+    validateImportData(data) {
+        return data &&
+            typeof data.ahorro !== 'undefined' &&
+            Array.isArray(data.estadisticas);
+    }
+
+    showError(message) {
+        this.updateResultMessage(message, 'error');
+    }
+
+    showSuccess(message) {
+        this.updateResultMessage(message, 'success');
+    }
+
+    updateResultMessage(message, type = 'info') {
+        const resultado = document.getElementById('resultado');
+        const icon = this.getIconForMessageType(type);
+        resultado.innerHTML = `${icon} ${message}`;
+        resultado.className = `result ${type}`;
+    }
+
+    getIconForMessageType(type) {
+        const icons = {
+            error: 'exclamation-triangle',
+            success: 'check',
+            info: 'info-circle'
+        };
+        return `<i class="fas fa-${icons[type] || icons.info}"></i>`;
     }
 }
 
-// Instancia y arranque de la aplicación
-document.addEventListener("DOMContentLoaded", () => {
-    const app = new SavingsManager();
-
-    // Vincular botones adicionales
-    document.querySelector(".export-btn").addEventListener("click", () => app.exportarJSON());
-    document.querySelector(".import-btn").addEventListener("click", () => {
-        const jsonData = prompt("Pega aquí el contenido JSON:");
-        if (jsonData) app.importarJSON(jsonData);
-    });
-    document.querySelector(".save-btn").addEventListener("click", () => app.guardarProgreso());
-    document.querySelector(".load-btn").addEventListener("click", () => app.cargarProgreso());
-    document.querySelector(".delete-btn").addEventListener("click", () => app.eliminarGuardado());
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+    new SavingsManager();
 });
