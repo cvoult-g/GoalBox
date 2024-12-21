@@ -230,14 +230,6 @@ a, a:visited {
     border-radius: 5px;
 }
 
-.charts-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap; 
-    gap: 20px;
-    width: 100%;
-}
-
 .timer-container {
     text-align: center;
     background-color: #e0e0e0;
