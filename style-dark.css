@@ -257,7 +257,6 @@ a, a:visited {
     color: #333;
 }
 
-
 @media (max-width: 900px) {
     .chart-container, .timer-container {
         max-width: 100%;
