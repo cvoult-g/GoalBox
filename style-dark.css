@@ -224,3 +224,8 @@
                 width: 100%;
             }
         }
+
+        a, a:visited {
+            color: #eaeaea;
+            text-decoration: none;
+        }

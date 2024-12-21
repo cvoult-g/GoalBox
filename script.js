@@ -207,3 +207,55 @@ function manejarError(mensaje) {
     document.getElementById('resultado').innerHTML = 
         `<i class="fas fa-exclamation-triangle"></i> ${mensaje}`;
 }
+
+// Crear un gráfico de progreso utilizando Chart.js
+function mostrarGraficoProgreso() {
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
+    const ahorros = estadisticas.map(item => item.ahorro);
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Array.from({ length: ahorros.length }, (_, i) => `Mes ${i + 1}`),
+            datasets: [{
+                label: 'Ahorro ($)',
+                data: ahorros,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+mostrarGraficoProgreso();
+
+function iniciarTemporizador() {
+    const fechaMeta = new Date(document.getElementById('fechaMeta').value);
+    const cuentaRegresiva = document.getElementById('cuentaRegresiva');
+
+    if (fechaMeta > new Date()) {
+        setInterval(() => {
+            const ahora = new Date();
+            const diferencia = fechaMeta - ahora;
+
+            if (diferencia <= 0) {
+                cuentaRegresiva.innerHTML = '<i class="fas fa-clock"></i> ¡Meta alcanzada!';
+            } else {
+                const horas = Math.floor(diferencia / (1000 * 60 * 60));
+                const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+                cuentaRegresiva.innerHTML = `${horas}h ${minutos}m ${segundos}s`;
+            }
+        }, 1000);
+    } else {
+        cuentaRegresiva.innerHTML = '<i class="fas fa-exclamation-triangle"></i> La fecha no puede ser pasada.';
+    }
+}

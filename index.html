@@ -10,9 +10,20 @@
 </head>
 <body>
 
+    <div class="chart-container">
+        <canvas id="progressChart"></canvas>
+    </div>
+
     <div class="container">
         <h1>Gestión de Ahorro</h1>
         
+        <div class="timer-container">
+            <h3>Contador Regresivo</h3>
+            <input type="datetime-local" id="fechaMeta">
+            <button onclick="iniciarTemporizador()">Iniciar Temporizador</button>
+            <div id="cuentaRegresiva"></div>
+        </div>        
+
         <div class="menu-container">
             <button onclick="exportarJSON()" class="export-btn">
                 <i class="fas fa-download"></i> Exportar
