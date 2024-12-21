@@ -219,7 +219,7 @@
             justify-content: space-between;
             gap: 20px;
             width: 100%;
-        }        
+        }   
 
         .chart-container, .timer-container {
             flex: 1;
@@ -227,8 +227,8 @@
             background-color: var(--container-background);
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            min-width: 300px; /* Establece un mínimo para la columna */
-            max-width: calc(33.333% - 75px);
+            min-width: 250px; 
+            max-width: calc(33.333% - 50px);
             box-sizing: border-box;
         }
 
