@@ -60,9 +60,7 @@
                 <div class="progress-bar" id="progressBar" data-progress="0"></div>
             </div>
 
-            <div class="result" id="resultado">
-                Ingresa tu primer ahorro para comenzar
-            </div>
+            <div class="result" id="resultado">Ingresa tu primer ahorro para comenzar</div>
         </form>
 
         <div class="statistics-container">
@@ -73,12 +71,11 @@
         <!-- Menú flotante para exportar -->
         <div class="menu-flotante" id="menuExportar" style="display:none;">
             <h3>Exportar Datos</h3>
-            <p>Tus datos de ahorro:</p>
             <textarea id="jsonExportar" readonly></textarea>
             <div id="jsonExportarLink"></div>
             <div class="menu-buttons">
                 <button data-action="exportData" class="export-btn">
-                <i class="fas fa-download"></i> Exportar
+                    <i class="fas fa-download"></i> Exportar
                 </button>
                 <button onclick="cerrarVentanaExportar()">
                     <i class="fas fa-times"></i> Cancelar
@@ -89,7 +86,6 @@
         <!-- Menú flotante para importar -->
         <div class="menu-flotante" id="menuImportar" style="display:none;">
             <h3>Importar Datos</h3>
-            <p>Selecciona un archivo JSON o pega su contenido:</p>
             <input type="file" id="importarArchivo" accept=".json">
             <textarea id="jsonImportar" placeholder="Pega aquí el contenido JSON..."></textarea>
             <div class="menu-buttons">
