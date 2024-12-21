@@ -13,49 +13,47 @@
 </head>
 <body>
     <div class="container">
-        <h1>Gestión de Ahorro</h1>
-
+        <h1><i class="fas fa-piggy-bank"></i> Goalbox</h1>
+        
         <div class="menu-container">
-            <button onclick="exportarJSON()" class="export-btn">
+            <button onclick="exportarJSON()" class="primary-btn">
                 <i class="fas fa-download"></i> Exportar
             </button>
-            <button onclick="mostrarMenu('importar')" class="import-btn">
+            <button onclick="mostrarMenu('importar')">
                 <i class="fas fa-upload"></i> Importar
             </button>
-            <button onclick="guardarProgreso()" class="save-btn">
+            <button onclick="guardarProgreso()">
                 <i class="fas fa-save"></i> Guardar
             </button>
-            <button onclick="cargarProgreso()" class="load-btn">
+            <button onclick="cargarProgreso()">
                 <i class="fas fa-sync-alt"></i> Cargar
             </button>
-            <button onclick="eliminarGuardado()" class="delete-btn">
+            <button onclick="eliminarGuardado()">
                 <i class="fas fa-trash"></i>
             </button>
         </div>
 
         <form id="ahorroForm">
             <div class="form-group">
-                <label for="ahorro">Ahorro Actual ($):</label>
+                <label for="ahorro">Ahorro Actual ($)</label>
                 <input type="number" id="ahorro" min="0" step="0.01" placeholder="0.00">
             </div>
 
             <div class="form-group">
-                <label for="nuevoAhorro">Nuevo Ahorro ($):</label>
-                <div class="nuevoAhorro">
+                <label for="nuevoAhorro">Nuevo Ahorro ($)</label>
+                <div class="add-min" style="display: flex; gap: 8px;">
                     <input type="number" id="nuevoAhorro" min="0" step="0.01" placeholder="0.00">
-                    <div class="add-min">
-                        <button type="button" onclick="manejarAhorro(true)" class="add-btn" aria-label="Añadir ahorro">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button type="button" onclick="manejarAhorro(false)" class="subtract-btn" aria-label="Reducir ahorro">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
+                    <button type="button" onclick="manejarAhorro(true)" class="primary-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button type="button" onclick="manejarAhorro(false)">
+                        <i class="fas fa-minus"></i>
+                    </button>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="faltaPorAhorar">Falta por Ahorrar ($):</label>
+                <label for="faltaPorAhorar">Falta por Ahorrar ($)</label>
                 <input type="number" id="faltaPorAhorar" value="100" disabled>
             </div>
 
@@ -71,35 +69,24 @@
             <ul id="estadisticasList"></ul>
         </div>
 
-        <!-- Menú flotante para exportar -->
         <div class="menu-flotante" id="menuExportar" style="display:none;">
             <h3>Exportar Datos</h3>
             <textarea id="jsonExportar" readonly></textarea>
             <div id="jsonExportarLink"></div>
             <div class="menu-buttons">
-                <button data-action="exportData" class="export-btn primary-btn">
-                    <i class="fas fa-download"></i> Exportar
-                </button>
-                <button onclick="cerrarVentanaExportar()">
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
+                <button onclick="cerrarVentanaExportar()">Cancelar</button>
+                <button onclick="exportarJSON()" class="primary-btn">Exportar</button>
             </div>
         </div>
 
-        <!-- Menú flotante para importar -->
         <div class="menu-flotante" id="menuImportar" style="display:none;">
             <h3>Importar Datos</h3>
             <input type="file" id="importarArchivo" accept=".json">
             <textarea id="jsonImportar" placeholder="Pega aquí el contenido JSON..."></textarea>
             <div class="menu-buttons">
-                <button onclick="importarJSON()" class="primary-btn">
-                    <i class="fas fa-file-upload"></i> Importar
-                </button>
-                <button onclick="cerrarVentanaImportar()">
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
+                <button onclick="cerrarVentanaImportar()">Cancelar</button>
+                <button onclick="importarJSON()" class="primary-btn">Importar</button>
             </div>
         </div>
-    </div>
 </body>
 </html>
