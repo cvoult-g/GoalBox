@@ -26,10 +26,6 @@ body {
 
 .container {
     width: 100%;
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-    flex-wrap: wrap;
     padding: 20px;
     background-color: var(--container-background);
     color: var(--text-soft);
@@ -219,9 +215,10 @@ a, a:visited {
 .charts-container {
     display: flex;
     justify-content: space-between;
+    flex-wrap: nowrap; /* Alinea los elementos en una sola fila */
     gap: 20px;
     width: 100%;
-}   
+}
 
 .chart-container, .timer-container {
     flex: 1;
