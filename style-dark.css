@@ -211,7 +211,19 @@ a, a:visited {
     text-decoration: none;
 }
 
-/* Contenedor del gráfico */
+#progressChart, #cuentaRegresiva {
+    width: 100%;
+    height: auto; /* Permite la adaptación de la altura según contenido */
+    max-width: 150px; /* Tamaño máximo deseado */
+    margin: 0 auto 20px auto; /* Centrado horizontal y espacio debajo */
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center; /* Centra el contenido dentro del gráfico */
+    align-items: center; /* Centra el contenido verticalmente */
+}
+
 .charts-container {
     display: flex;
     justify-content: space-between;
@@ -220,20 +232,9 @@ a, a:visited {
     width: 100%;
 }
 
-#progressChart, #cuentaRegresiva {
-    width: 100%;
-    height: auto; /* Permite la adaptación de la altura según contenido */
-    max-width: 150px; /* Tamaño máximo deseado */
-    margin: 0 auto 20px auto; /* Espacio alrededor de los charts y centrándolos */
-    background-color: #f3f3f3;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 .timer-container {
     text-align: center;
     background-color: #e0e0e0;
-    
 }
 
 @media (max-width: 900px) {
