@@ -220,23 +220,22 @@ a, a:visited {
     width: 100%;
 }
 
-.chart-container, .timer-container {
-    flex: 1;
-    padding: 12px;
-    background-color: var(--container-background);
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-width: 250px; 
-    max-width: calc(33.333% - 50px);
-    box-sizing: border-box;
-}
-
 #progressChart, #cuentaRegresiva {
     width: 100%;
     height: 300px;
     background-color: #f3f3f3;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.chart-container, .timer-container {
+    flex: 1 1 calc(50% - 10px); /* Distribuye los espacios igual en dos columnas si el espacio lo permite */
+    padding: 12px;
+    background-color: var(--container-background);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 250px; 
+    box-sizing: border-box;
 }
 
 .timer-container {
