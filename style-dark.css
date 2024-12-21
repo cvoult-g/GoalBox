@@ -135,7 +135,9 @@ button {
   border-radius: var(--border-radius-sm); /* Border radius más sutil */
   cursor: pointer;
   transition: all var(--transition-fast);
-  gap: 0.5rem; /* Espacio entre icono y texto */
+  gap: 0.7rem; /* Espacio entre icono y texto */
+  background-color: #332f35;
+  color: #a198a9;
 }
 
 /* Botón principal (rojo) */
@@ -155,25 +157,13 @@ button.primary-btn:active {
   transform: translateY(0);
 }
 
-/* Botón secundario */
-button.secondary-btn {
-  font-size: 0.8em;
-  padding: 0.25em 1em;
-  margin-left: 0.5em;
-  background: #332f35; /* Fondo oscuro */
-  color: #a198a9; /* Texto gris claro */
-  border: 1px solid #a198a9; /* Borde opcional para mayor visibilidad */
-}
-
-button.secondary-btn:hover {
+button:hover {
   background-color: #403a42; /* Un color más claro para el hover */
   color: white; /* Cambia el texto a blanco para contraste */
-  transform: translateY(-2px);
 }
 
-button.secondary-btn:active {
+button:active {
   background-color: #2b272e; /* Color más oscuro para el click */
-  transform: translateY(0);
 }
 
 /* Iconos */
