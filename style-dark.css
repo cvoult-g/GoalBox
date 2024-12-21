@@ -153,6 +153,7 @@ button:hover {
 
 .menu-flotante textarea {
     width: calc(100% - 24px);
+    height: 200px;
     padding: 12px;
     border: 1px solid var(--text-soft);
     border-radius: 8px;
