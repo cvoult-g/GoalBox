@@ -26,7 +26,7 @@ body {
 
 .container {
     width: 100%;
-    flex: 1 1 calc(33.33% - 10px); /* Distribuye los espacios en tres columnas */
+    flex: 1 1 calc(33.33% - 10px); 
     padding: 20px;
     background-color: var(--container-background);
     color: var(--text-soft);
@@ -216,7 +216,7 @@ a, a:visited {
 .charts-container {
     display: flex;
     justify-content: space-between;
-    flex-wrap: nowrap; /* Alinea los elementos en una sola fila */
+    flex-wrap: nowrap; 
     gap: 20px;
     width: 100%;
 }
@@ -230,7 +230,7 @@ a, a:visited {
 }
 
 .chart-container, .timer-container {
-    flex: 1 1 calc(33.33% - 10px); /* Distribuye los espacios en tres columnas */
+    flex: 1 1 calc(33.33% - 10px); 
     padding: 12px;
     background-color: var(--container-background);
     border-radius: 5px;
@@ -242,20 +242,6 @@ a, a:visited {
 .timer-container {
     text-align: center;
     background-color: #e0e0e0;
-}
-
-.progress-container {
-    margin-top: 20px;
-    height: 20px;
-    background-color: var(--progress-bg);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-#cuentaRegresiva {
-    margin-top: 10px;
-    font-size: 18px;
-    color: #333;
 }
 
 @media (max-width: 900px) {
