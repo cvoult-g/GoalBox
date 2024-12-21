@@ -1,0 +1,228 @@
+/* Variables de Colores */
+:root {
+    --background-dark: #332f35;
+    --container-background: #1f1c23;
+    --text-light: #a198a9;
+    --text-soft: #928A99;
+    --primary-dark: #E3474A;
+    --primary-dark-hover: rgba(227, 71, 74, 0.95);
+    --progress-bg: #E0F1F2;
+    --progress-bar: #3D8E91;
+    --menu-buttons-bg: #E4F0F2;
+    --menu-buttons-hover: #48A3A6;
+}
+
+/* General body styles */
+body {
+    background: var(--background-dark);
+    font-family: "Open Sans", "Segoe UI", Tahoma, sans-serif;
+    margin: 0;
+    color: var(--text-light);
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    margin-top: 3em;
+    overflow-x: hidden;
+}
+
+/* General container */
+.container {
+    width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--container-background);  /* Fondo oscuro suave */
+    color: var(--text-soft);            /* Texto más suave para contraste */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-soft);             /* Turquesa suave para encabezado */
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+.form-group label {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: var(--text-soft);            /* Turquesa oscuro suave para contraste */
+}
+
+/* Inputs */
+input[type=number] {
+    background: #27232A;
+    border: none;
+    border-radius: 4px;
+    color: var(--text-soft);
+    padding: 10px 20px;
+    font-size: 16px;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+    width: calc(100% - 30px);
+}
+
+input[type=number]:focus {
+    box-shadow: 0 0 8px rgba(96, 96, 96, 0.7);  /* Caja de enfoque oscuro suave */
+}
+
+/* Buttons */
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    background-color: var(--primary-dark);
+    margin: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--primary-dark-hover);  /* Color rojo oscuro con un 5% más de luz */
+    transform: scale(1.05);     /* Animación de agrandar botón */
+}
+
+/* Icons */
+.fas {
+    margin-right: 8px;
+    color: var(--text-light);  /* Iconos claros contrastados */
+}
+
+/* Progress container */
+.progress-container {
+    margin-top: 20px;
+    height: 20px;
+    background-color: var(--progress-bg);  /* Turquesa más claro */
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--progress-bar);  /* Turquesa más intenso */
+    transition: width 0.3s ease;
+}
+
+/* Result and Statistics container */
+.result, .statistics-container {
+    margin-top: 20px;
+}
+
+.statistics-container h2 {
+    margin-bottom: 10px;
+    color: var(--text-light);            /* Turquesa suave */
+    font-weight: bold;          /* Mayor énfasis en texto */
+}
+
+/* Statistics list */
+#estadisticasList {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Menu float buttons */
+.menu-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.menu-container button {
+    background-color: var(--primary-dark);  /* Turquesa suave */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.menu-container button:hover {
+    background-color: var(--menu-buttons-hover);  /* Miel oscuro en hover */
+    transform: scale(1.05);  /* Animación de agrandar botón */
+}
+
+.add-min {
+    display: flex;
+    flex-direction: row;
+}
+
+.nuevoAhorro {
+    display: flex;
+    align-items: center;
+}
+
+/* Menús Flotantes Mejorados */
+.menu-flotante {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--container-background);
+    color: var(--text-light);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    display: none;  /* Inicia oculto */
+    z-index: 1000;
+    width: 400px;
+    max-width: 97%;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.menu-flotante p {
+    margin-bottom: 24px;
+    font-size: 20px;
+    color: var(--text-soft);
+    text-align: center;
+}
+
+.menu-flotante textarea {
+    width: calc(100% - 25px);
+    padding: 12px;
+    border: 1px solid var(--text-soft);
+    border-radius: 8px;
+    background-color: #2A282F;
+    color: var(--text-light);
+    resize: none;
+    font-size: 16px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu-flotante button {
+    padding: 14px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    background-color: var(--primary-dark);
+    margin-right: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu-flotante button:hover {
+    background-color: var(--menu-buttons-hover);
+    transform: scale(1.05);
+}
+
+#descargarJson {
+    color: white;
+}
+
+#descargarJson:hover {
+    text-decoration: none;
+}
