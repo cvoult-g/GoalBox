@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
 
-.league-spartan-<uniquifier> {
-    font-family: "League Spartan", serif;
-    font-optical-sizing: auto;
-    font-weight: <weight>;
-    font-style: normal;
-  }
   
 :root {
     --background-dark: #332f35;
@@ -19,6 +13,12 @@
     --menu-buttons-bg: #E4F0F2;
     --menu-buttons-hover: #48A3A6;
 }
+
+.league-spartan {
+    font-family: "League Spartan", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
 
 body {
     background: var(--background-dark);
