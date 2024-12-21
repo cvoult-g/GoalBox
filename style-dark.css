@@ -29,9 +29,9 @@
     --spacing-xl: 2rem;
     
     /* Sistema de bordes */
-    --border-radius-sm: 3px;
-    --border-radius-md: 6px;
-    --border-radius-lg: 8px;
+    --border-radius-sm: 5px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 10px;
     
     /* Sombras */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -204,6 +204,14 @@ button:active {
   color: white;
   font-weight: 600;
   font-size: 0.875rem;
+}
+
+.menu-container {
+  display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
 }
 
 /* Menú flotante */
