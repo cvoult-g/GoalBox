@@ -68,7 +68,7 @@ body {
 
 /* Contenedor principal */
 .container {
-    width: min(750px, 100%);
+    width: min(800px, 100%);
     margin: 0 auto;
     padding: var(--spacing-lg);
     background-color: var(--color-surface);
@@ -345,11 +345,6 @@ a {
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-.add-min {
-    display: flex;
-    margin-left: 10px;
 }
 
 #menuExportar .menu-buttons, #menuImportar .menu-buttons {
