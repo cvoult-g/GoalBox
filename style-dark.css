@@ -264,9 +264,6 @@ button:active {
   background-color: var(--color-surface-variant);
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-sm);
-  overflow-y: auto;
-  scrollbar-color: var(--color-secondary) var(--color-surface-variant);
-  scrollbar-width: thin;
 }
 
 #estadisticasList {
@@ -394,6 +391,9 @@ a {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-y: auto;
+  scrollbar-color: var(--color-secondary) var(--color-surface-variant);
+  scrollbar-width: thin;
 }
 
 .menu-containerStatistics {
