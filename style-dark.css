@@ -181,13 +181,13 @@ button:active {
 
 /* Barra de progreso */
 .progress-container {
-    margin: var(--spacing-lg) 0;
-    height: 20px;
-    background-color: var(--color-surface-variant);
-    border-radius: var(--border-radius-md);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-  }  
+  margin: var(--spacing-lg) 0;
+  height: 20px;
+  background-color: var(--color-surface-variant);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}  
 
 .progress-bar {
   height: 100%;
@@ -197,7 +197,7 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: var(--spacing-md);
+  padding-right: var(--spacing-sm);
 }
 
 .progress-bar::after {
@@ -205,7 +205,13 @@ button:active {
   color: white;
   font-weight: 600;
   font-size: 0.875rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 50%; /* Alinea el texto a la izquierda por defecto */
+  transform-origin: left center;
 }
+
 
 .menu-container {
   display: flex;
