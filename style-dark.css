@@ -272,7 +272,7 @@ button:active {
   flex-direction: column;
   gap: var(--spacing-sm);
   overflow-y: auto;
-  scrollbar-color: var(--color-secondary) var(--color-surface-variant);
+  scrollbar-color: var(--color-primary) var(--color-surface-variant);
   scrollbar-width: thin;
   height: 350px;
 
