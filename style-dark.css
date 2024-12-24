@@ -259,33 +259,34 @@ button:active {
 
 /* Estadísticas */
 .statistics-container {
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-lg);
-    background-color: var(--color-surface-variant);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-sm);
-  }
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-surface-variant);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
 
 #estadisticasList {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  
+
   & li {
-    padding: var(--spacing-md);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background-color var(--transition-fast);
-    
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-    }
-    
-    &:last-child {
-      border-bottom: none;
-    }
+      padding: var(--spacing-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background-color var(--transition-fast);
+
+      &:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      &:last-child {
+          border-bottom: none;
+      }
   }
 }
+
 
 /* Enlaces */
 a {
@@ -393,4 +394,15 @@ a {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+}
+
+#historialContainer::-webkit-scrollbar {
+  width: 8px;
+}
+#historialContainer::-webkit-scrollbar-thumb {
+  background-color: var(--color-secondary);
+  border-radius: 4px;
+}
+#historialContainer::-webkit-scrollbar-track {
+  background-color: var(--color-surface-variant);
 }
