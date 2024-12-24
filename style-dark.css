@@ -68,7 +68,7 @@ body {
 
 /* Contenedor principal */
 .container {
-    width: min(700px, 100%);
+    width: min(750px, 100%);
     margin: 0 auto;
     padding: var(--spacing-lg);
     background-color: var(--color-surface);
