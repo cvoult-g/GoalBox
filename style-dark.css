@@ -370,11 +370,14 @@ a {
 .form-container {
   flex: 2;
   min-width: 300px;
+  border-right: 2px solid var(--color-text-disabled);
+  padding-right: 17px;
+  border-right-style: dashed;
 }
 
 .stats-container {
   flex: 1;
-  min-width: 300px;
+  min-width: 350px;
   display: flex;
   flex-direction: column;
   gap: 20px;
