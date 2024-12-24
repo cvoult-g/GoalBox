@@ -68,7 +68,7 @@ body {
 
 /* Contenedor principal */
 .container {
-    width: min(650px, 100%);
+    width: min(700px, 100%);
     margin: 0 auto;
     padding: var(--spacing-lg);
     background-color: var(--color-surface);
@@ -367,8 +367,9 @@ a {
 
 .main-grid {
   display: flex;
-  flex-wrap: wrap;
   gap: 20px;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .form-container {
@@ -382,16 +383,6 @@ a {
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.statistics-summary, .statistics-list {
-  background-color: #1e1e1e;
-  border-radius: 10px;
-  padding: 15px;
-}
-
-.statistics-summary h2, .statistics-list h2 {
-  margin-top: 0;
 }
 
 .menu-containerStatistics {

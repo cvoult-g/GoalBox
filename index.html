@@ -62,10 +62,10 @@
 
             <!-- Contenedor de estadísticas y opciones -->
             <div class="stats-container">
-                <div class="statistics-summary" id="resumenEstadisticas">
-                    <h2>Estadísticas Resumen</h2>
+                <div class="statistics-list">
+                    <h2>Historial de Ahorros</h2>
+                    <ul id="estadisticasList"></ul>
                 </div>
-
                 <div class="menu-containerStatistics">
                     <button onclick="exportarJSON()">
                         <i class="fas fa-download"></i> Exportar
@@ -75,22 +75,17 @@
                     </button>
                 </div>
 
-                <div id="menuExportar" style="display: none;">
+                <div class="menu-flotante" id="menuExportar" style="display: none;">
                     <textarea id="jsonExportar" readonly></textarea>
                     <div id="jsonExportarLink"></div>
                     <button onclick="cerrarVentanaExportar()">Cerrar</button>
                 </div>
 
-                <div id="menuImportar" style="display: none;">
+                <div class="menu-flotante" id="menuImportar" style="display: none;">
                     <textarea id="jsonImportar" placeholder="Pega aquí el contenido JSON"></textarea>
                     <input type="file" id="importarArchivo" accept="application/json">
                     <button onclick="importarJSON()">Importar</button>
                     <button onclick="cerrarVentanaImportar()">Cerrar</button>
-                </div>
-
-                <div class="statistics-list">
-                    <h2>Historial de Ahorros</h2>
-                    <ul id="estadisticasList"></ul>
                 </div>
             </div>
         </div>
