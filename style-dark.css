@@ -383,6 +383,9 @@ a {
   border-right: 2px solid var(--color-text-disabled);
   padding-right: 17px;
   border-right-style: dashed;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .stats-container {
