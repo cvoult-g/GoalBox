@@ -3,6 +3,22 @@ document.addEventListener('DOMContentLoaded', function() {
     actualizarListaEstadisticas();
 });
 
+// Utilidades
+function esNumeroValido(valor) {
+    return !isNaN(valor) && valor >= 0;
+}
+
+function escaparHTML(texto) {
+    const div = document.createElement('div');
+    div.innerText = texto;
+    return div.innerHTML;
+}
+
+function mostrarMensaje(icono, mensaje) {
+    document.getElementById('resultado').innerHTML = `<i class="fas ${icono}"></i> ${mensaje}`;
+}
+
+// Menú
 function mostrarMenu(tipo) {
     const menuExportar = document.getElementById('menuExportar');
     const menuImportar = document.getElementById('menuImportar');
@@ -16,37 +32,43 @@ function mostrarMenu(tipo) {
     }
 }
 
+// Barra de progreso
 function actualizarProgressBar(valor) {
     const porcentaje = Math.min((valor / 100) * 100, 100);
     const progressBar = document.getElementById('progressBar');
-    progressBar.style.width = porcentaje + '%';
-    progressBar.setAttribute('data-progress', Math.round(porcentaje));
+    if (progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
+        progressBar.style.width = porcentaje + '%';
+        progressBar.setAttribute('data-progress', Math.round(porcentaje));
+    }
 }
 
+// Manejo de ahorro
 function manejarAhorro(isAddition) {
-    const ahorroActual = parseFloat(document.getElementById('ahorro').value) || 0;
-    const nuevoAhorro = parseFloat(document.getElementById('nuevoAhorro').value);
+    const ahorroInput = document.getElementById('ahorro');
+    const nuevoAhorroInput = document.getElementById('nuevoAhorro');
 
-    if (!isNaN(nuevoAhorro) && nuevoAhorro > 0) {
-        let nuevoTotal = isAddition ? 
+    const ahorroActual = parseFloat(ahorroInput.value) || 0;
+    const nuevoAhorro = parseFloat(nuevoAhorroInput.value);
+
+    if (esNumeroValido(nuevoAhorro) && nuevoAhorro > 0) {
+        const nuevoTotal = isAddition ? 
             (ahorroActual + nuevoAhorro) : 
             Math.max(ahorroActual - nuevoAhorro, 0);
-        
-        nuevoTotal = parseFloat(nuevoTotal.toFixed(2));
-        
-        document.getElementById('ahorro').value = nuevoTotal;
-        const falta = Math.max(100 - nuevoTotal, 0).toFixed(2);
+
+        const totalRedondeado = parseFloat(nuevoTotal.toFixed(2));
+        const falta = Math.max(100 - totalRedondeado, 0).toFixed(2);
+
+        ahorroInput.value = totalRedondeado;
         document.getElementById('faltaPorAhorar').value = falta;
-        
-        actualizarProgressBar(nuevoTotal);
-        
-        document.getElementById('resultado').innerHTML = 
-            `Has ahorrado ${nuevoTotal.toFixed(2)}$ (${((nuevoTotal / 100) * 100).toFixed(1)}% de tu meta)`;
-        
-        guardarEnEstadisticas(nuevoTotal);
-        document.getElementById('nuevoAhorro').value = '';
+
+        actualizarProgressBar(totalRedondeado);
+
+        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / 100) * 100).toFixed(1)}% de tu meta)`);
+
+        guardarEnEstadisticas(totalRedondeado);
+        nuevoAhorroInput.value = '';
     } else {
-        manejarError('Por favor ingresa una cantidad válida.');
+        mostrarMensaje('fa-exclamation-triangle', 'Por favor ingresa una cantidad válida.');
     }
 }
 
@@ -58,11 +80,11 @@ function guardarEnEstadisticas(ahorro) {
         hour: '2-digit',
         minute: '2-digit'
     });
-    
+
     const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
     estadisticas.push({ ahorro, fecha });
     localStorage.setItem('estadisticas', JSON.stringify(estadisticas));
-    
+
     actualizarListaEstadisticas();
 }
 
@@ -70,21 +92,21 @@ function actualizarListaEstadisticas() {
     const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
     const lista = document.getElementById('estadisticasList');
     lista.innerHTML = '';
-    
+
     estadisticas.slice(-10).reverse().forEach(item => {
-        // Verificar si item.ahorro es un número válido antes de formatear
         const ahorroFormatted = typeof item.ahorro === 'number' ? item.ahorro.toFixed(2) : '0.00';
-        
+
         const li = document.createElement('li');
         li.innerHTML = `
             <i class="fas fa-chart-line"></i>
-            $${ahorroFormatted} 
-            <small>${item.fecha}</small>
+            $${escaparHTML(ahorroFormatted)} 
+            <small>${escaparHTML(item.fecha)}</small>
         `;
         lista.appendChild(li);
     });
 }
 
+// Guardar y cargar progreso
 function guardarProgreso() {
     const ahorro = document.getElementById('ahorro').value;
     const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
@@ -93,26 +115,25 @@ function guardarProgreso() {
         estadisticas,
         ultimaActualizacion: new Date().toISOString()
     }));
-    
-    document.getElementById('resultado').innerHTML = 
-        '<i class="fas fa-check"></i> Progreso guardado correctamente';
+
+    mostrarMensaje('fa-check', 'Progreso guardado correctamente');
 }
 
 function cargarProgreso() {
     const datos = JSON.parse(localStorage.getItem('ahorro'));
     if (datos) {
-        document.getElementById('ahorro').value = datos.ahorro;
+        const ahorroInput = document.getElementById('ahorro');
+        ahorroInput.value = datos.ahorro;
+
         const falta = Math.max(100 - parseFloat(datos.ahorro), 0).toFixed(2);
         document.getElementById('faltaPorAhorar').value = falta;
-        
+
         actualizarProgressBar(datos.ahorro);
         actualizarListaEstadisticas();
-        
-        document.getElementById('resultado').innerHTML = 
-            `<i class="fas fa-sync-alt"></i> Datos cargados: ${new Date(datos.ultimaActualizacion).toLocaleDateString('es-ES')}`;
+
+        mostrarMensaje('fa-sync-alt', `Datos cargados: ${new Date(datos.ultimaActualizacion).toLocaleDateString('es-ES')}`);
     } else {
-        document.getElementById('resultado').innerHTML = 
-            '<i class="fas fa-exclamation-triangle"></i> No hay datos guardados';
+        mostrarMensaje('fa-exclamation-triangle', 'No hay datos guardados');
     }
 }
 
@@ -120,37 +141,38 @@ function eliminarGuardado() {
     if (confirm('¿Estás seguro de que deseas eliminar todo tu progreso guardado?')) {
         localStorage.removeItem('ahorro');
         localStorage.removeItem('estadisticas');
-        
+
         document.getElementById('ahorro').value = '';
         document.getElementById('faltaPorAhorar').value = '100';
         document.getElementById('nuevoAhorro').value = '';
         document.getElementById('estadisticasList').innerHTML = '';
-        
+
         actualizarProgressBar(0);
-        
-        document.getElementById('resultado').innerHTML = 
-            '<i class="fas fa-trash"></i> Progreso eliminado correctamente';
+
+        mostrarMensaje('fa-trash', 'Progreso eliminado correctamente');
     }
 }
 
+// Exportar e importar JSON
 function exportarJSON() {
     const datos = {
         ahorro: document.getElementById('ahorro').value,
         estadisticas: JSON.parse(localStorage.getItem('estadisticas')) || [],
         fecha_exportacion: new Date().toISOString()
     };
-    
+
     const jsonString = JSON.stringify(datos, null, 2);
     document.getElementById('jsonExportar').value = jsonString;
-    
+
     const downloadLink = document.createElement('a');
     downloadLink.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(jsonString);
     downloadLink.download = 'mis_ahorros.json';
-    
-    document.getElementById('jsonExportarLink').innerHTML = '';
-    document.getElementById('jsonExportarLink').appendChild(downloadLink);
+
+    const exportarLink = document.getElementById('jsonExportarLink');
+    exportarLink.innerHTML = '';
+    exportarLink.appendChild(downloadLink);
     downloadLink.innerHTML = '<i class="fas fa-file-download"></i> Descargar JSON';
-    
+
     mostrarMenu('exportar');
 }
 
@@ -167,7 +189,7 @@ function importarJSON() {
     } else if (textoJSON) {
         procesarDatosImportados(textoJSON);
     } else {
-        manejarError('Por favor selecciona un archivo o pega el contenido JSON');
+        mostrarMensaje('fa-exclamation-triangle', 'Por favor selecciona un archivo o pega el contenido JSON');
     }
 }
 
@@ -177,17 +199,16 @@ function procesarDatosImportados(contenidoJSON) {
         if (datos.ahorro !== undefined) {
             localStorage.setItem('ahorro', JSON.stringify(datos));
             localStorage.setItem('estadisticas', JSON.stringify(datos.estadisticas || []));
-            
+
             cargarProgreso();
             cerrarVentanaImportar();
-            
-            document.getElementById('resultado').innerHTML = 
-                '<i class="fas fa-check"></i> Datos importados correctamente';
+
+            mostrarMensaje('fa-check', 'Datos importados correctamente');
         } else {
-            manejarError('El formato del JSON no es válido');
+            mostrarMensaje('fa-exclamation-triangle', 'El formato del JSON no es válido');
         }
     } catch (e) {
-        manejarError('Error al procesar el archivo JSON');
+        mostrarMensaje('fa-exclamation-triangle', 'Error al procesar el archivo JSON');
     }
 }
 
@@ -199,9 +220,4 @@ function cerrarVentanaImportar() {
 
 function cerrarVentanaExportar() {
     document.getElementById('menuExportar').style.display = 'none';
-}
-
-function manejarError(mensaje) {
-    document.getElementById('resultado').innerHTML = 
-        `<i class="fas fa-exclamation-triangle"></i> ${mensaje}`;
 }
