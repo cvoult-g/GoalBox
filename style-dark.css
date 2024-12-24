@@ -365,42 +365,37 @@ a {
   align-items: flex-end;
 }
 
-/* Estilo general para la lista */
-#estadisticasList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-/* Estilo para cada elemento de la lista */
-#estadisticasList li {
+.main-grid {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.form-container {
+  flex: 2;
+  min-width: 300px;
+}
+
+.stats-container {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.statistics-summary, .statistics-list {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.statistics-summary h2, .statistics-list h2 {
+  margin-top: 0;
+}
+
+.menu-containerStatistics {
+  display: flex;
   justify-content: space-between;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px 15px;
-  margin-bottom: 8px;
-  transition: background-color 0.3s ease;
-}
-
-/* Hover effect */
-#estadisticasList li:hover {
-  background-color: #e6f7ff;
-}
-
-/* Ícono de la lista */
-#estadisticasList li i {
-  color: #4caf50;
-  margin-right: 10px;
-  font-size: 18px;
-}
-
-/* Texto principal */
-#estadisticasList li small {
-  color: #777;
-  font-size: 12px;
-  margin-left: 10px;
+  gap: 10px;
 }
