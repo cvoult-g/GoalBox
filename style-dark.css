@@ -274,7 +274,7 @@ button:active {
   overflow-y: auto;
   scrollbar-color: var(--color-primary) var(--color-surface-variant);
   scrollbar-width: thin;
-  height: 300px;
+  height: 325px;
 
   & li {
       padding: var(--spacing-md);
