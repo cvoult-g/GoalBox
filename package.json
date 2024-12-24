@@ -1,0 +1,18 @@
+{
+  "name": "goalbox",
+  "version": "1.0.0",
+  "description": "Una aplicación simple y efectiva para gestionar tus ahorros y alcanzar metas financieras.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "CuriosVoult",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^33.2.1"
+  },
+  "win": {
+    "icon": "piggy-bank-solid.ico"
+  }
+}
