@@ -151,7 +151,7 @@ function eliminarGuardado() {
         localStorage.removeItem('estadisticas');
 
         document.getElementById('ahorro').value = '';
-        document.getElementById('faltaPorAhorar').value = '100';
+        document.getElementById('faltaPorAhorar').value = '';
         document.getElementById('nuevoAhorro').value = '';
         document.getElementById('estadisticasList').innerHTML = '';
 
