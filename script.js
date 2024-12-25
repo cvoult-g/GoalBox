@@ -23,47 +23,38 @@ function mostrarMenu(tipo) {
     const menuExportar = document.getElementById('menuExportar');
     const menuImportar = document.getElementById('menuImportar');
 
-    if (tipo === 'exportar') {
-        menuExportar.style.display = 'block';
-        menuImportar.style.display = 'none';
-    } else if (tipo === 'importar') {
-        menuExportar.style.display = 'none';
-        menuImportar.style.display = 'block';
-    }
+    menuExportar.style.display = (tipo === 'exportar') ? 'block' : 'none';
+    menuImportar.style.display = (tipo === 'importar') ? 'block' : 'none';
 }
 
 function actualizarProgressBar(valor) {
-    const metaAhorro = document.getElementById("metaAhorroInput");
+    const metaAhorroInput = document.getElementById("metaAhorroInput");
     const metaAhorroTexto = document.getElementById("metaAhorroTexto");
 
-    if (!metaAhorro || metaAhorro.value === null || metaAhorro.value === '') {
-        console.error('Elemento metaAhorro no encontrado o no tiene valor.');
+    if (!metaAhorroInput) {
+        console.error('Elemento metaAhorro no encontrado.');
         return;
     }
 
     const progressBar = document.getElementById('progressBar');
+
     if (!progressBar) {
         console.error('Elemento progressBar no encontrado.');
         return;
     }
 
-    const porcentaje = Math.min((valor / metaAhorro.value) * 100, 100);
-    console.log('Progreso calculado:', porcentaje, '%');
+    const porcentaje = Math.min((valor / metaAhorroInput.value) * 100, 100);
 
     if (metaAhorroTexto) {
-        metaAhorroTexto.textContent = `Falta: $${(metaAhorro.value - valor).toFixed(2)}`;
+        metaAhorroTexto.textContent = `Falta: $${(metaAhorroInput.value - valor).toFixed(2)}`;
     }
 
     if (progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
         progressBar.style.width = porcentaje + '%';
         progressBar.setAttribute('data-progress', Math.round(porcentaje));
-        console.log('Progreso actualizado a:', porcentaje, '%');
-    } else {
-        console.log('El progreso ya está actualizado.');
     }
 }
 
-// Ejemplo de llamada a la función manejarAhorro al hacer clic en un botón
 const boton = document.getElementById('guardarProgreso');
 if (boton) {
     boton.addEventListener('click', manejarAhorro);
@@ -75,7 +66,7 @@ if (boton) {
 function manejarAhorro(isAddition) {
     const ahorroInput = document.getElementById('ahorro');
     const nuevoAhorroInput = document.getElementById('nuevoAhorro');
-    const metaAhorroInput = document.getElementById('metaAhorroInput'); 
+    const metaAhorroInput = document.getElementById('metaAhorroInput');
 
     const ahorroActual = parseFloat(ahorroInput.value) || 0;
     const nuevoAhorro = parseFloat(nuevoAhorroInput.value);
@@ -94,7 +85,7 @@ function manejarAhorro(isAddition) {
 
         actualizarProgressBar(totalRedondeado);
 
-        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / 100) * 100).toFixed(1)}% de tu meta)`);
+        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / nuevaMeta) * 100).toFixed(1)}% de tu meta)`);
 
         guardarEnEstadisticas(totalRedondeado);
         nuevoAhorroInput.value = '';
@@ -137,33 +128,15 @@ function actualizarListaEstadisticas() {
     });
 }
 
-const boton = document.getElementById('guardarProgreso');
-if (boton) {
-    boton.addEventListener('click', manejarAhorro);
-} else {
-    console.error('Botón guardarProgreso no encontrado.');
-}
-
-const metaAhorroInput = document.getElementById('metaAhorroInput');
-if (metaAhorroInput) {
-    const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
-} else {
-    console.error('Elemento metaAhorroInput no encontrado.');
-}
-
-
 function guardarProgreso() {
     const ahorroInput = document.getElementById('ahorro');
-    const metaAhorroInput = document.getElementById('metaAhorroInput'); // Revisar si existe
+    const metaAhorroInput = document.getElementById('metaAhorroInput');
 
     if (ahorroInput && metaAhorroInput) {
         const ahorroActual = parseFloat(ahorroInput.value) || 0;
         const meta = parseFloat(metaAhorroInput.value) || 0;
 
-        const datos = {
-            ahorro: ahorroActual,
-            meta: meta
-        };
+        const datos = { ahorro: ahorroActual, meta };
 
         localStorage.setItem('progresoAhorro', JSON.stringify(datos));
         mostrarMensaje('fa-check-circle', 'Progreso guardado correctamente.');
@@ -177,17 +150,10 @@ function cargarProgreso() {
     const metaAhorroInput = document.getElementById('metaAhorroInput');
     const datos = JSON.parse(localStorage.getItem('ahorro'));
 
-    if (!metaAhorroTexto || !metaAhorroInput) {
-        console.error('Elemento del DOM no encontrado.');
-        return;
-    }
-
     if (datos) {
         metaAhorroTexto.textContent = datos.metaAhorro || 0;
-
         actualizarProgressBar(datos.ahorro);
         actualizarListaEstadisticas();
-
         mostrarMensaje('fa-sync-alt', `Datos cargados: ${new Date(datos.ultimaActualizacion).toLocaleDateString('es-ES')}`);
     } else {
         mostrarMensaje('fa-exclamation-triangle', 'No hay datos guardados');
@@ -210,7 +176,6 @@ function eliminarGuardado() {
         if (estadisticasList) estadisticasList.innerHTML = '';
 
         actualizarProgressBar(0);
-
         mostrarMensaje('fa-trash', 'Progreso eliminado correctamente');
     }
 }
@@ -286,7 +251,6 @@ function procesarDatosImportados(contenidoJSON) {
     }
 }
 
-
 function cerrarVentanaImportar() {
     document.getElementById('menuImportar').style.display = 'none';
     document.getElementById('importarArchivo').value = '';
@@ -321,7 +285,3 @@ function actualizarMetaAhorro() {
 
 // Escuchar cambios en 'metaAhorroInput' para actualizar la meta de ahorro
 metaAhorroInput.addEventListener('input', actualizarMetaAhorro);
-
-function obtenerMetaAhorro() {
-    return parseFloat(localStorage.getItem('metaAhorro')) || 100;
-}
