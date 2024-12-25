@@ -136,19 +136,24 @@ function actualizarListaEstadisticas() {
     });
 }
 
-// Guardar y cargar progreso
 function guardarProgreso() {
-    const ahorro = document.getElementById('ahorro').value;
-    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
-    const faltaInput = parseFloat(document.getElementById("metaAhorro").value);
-    localStorage.setItem('ahorro', JSON.stringify({ 
-        ahorro,
-        metaAhorro,
-        estadisticas,
-        ultimaActualizacion: new Date().toISOString()
-    }));
+    const ahorroInput = document.getElementById('ahorro');
+    const metaAhorro = document.getElementById('metaAhorroInput'); // Verificar si existe 'metaAhorro' o 'metaAhorroInput'
 
-    mostrarMensaje('fa-check', 'Progreso guardado correctamente');
+    if (ahorroInput && metaAhorro) {
+        const ahorroActual = parseFloat(ahorroInput.value) || 0;
+        const meta = parseFloat(metaAhorro.value) || 0;
+
+        const datos = {
+            ahorro: ahorroActual,
+            meta: meta
+        };
+
+        localStorage.setItem('progresoAhorro', JSON.stringify(datos));
+        mostrarMensaje('fa-check-circle', 'Progreso guardado correctamente.');
+    } else {
+        mostrarMensaje('fa-exclamation-triangle', 'No se pudo guardar el progreso.');
+    }
 }
 
 function cargarProgreso() {
