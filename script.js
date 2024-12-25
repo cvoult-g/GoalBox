@@ -307,8 +307,11 @@ function procesarDatosImportados(contenidoJSON) {
         localStorage.setItem('ahorro', JSON.stringify(datos));
         localStorage.setItem('estadisticas', JSON.stringify(datos.estadisticas || []));
         localStorage.setItem("metaAhorro", JSON.stringify(datos.metaAhorro));
-        
-        cargarProgreso();
+
+        const progresoPorcentaje = ((datos.ahorro / datos.metaAhorro) * 100).toFixed(2);
+        document.getElementById('barraProgreso').style.width = progresoPorcentaje + '%';
+        document.getElementById('porcentajeProgreso').innerText = progresoPorcentaje + '%';
+
         cerrarVentanaImportar();
         mostrarMensaje('fa-check', 'Datos importados correctamente');
     } catch (e) {
