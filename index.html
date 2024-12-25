@@ -29,7 +29,7 @@
                         <i class="fas fa-trash"></i>Borrar
                     </button>
                 </div>
-
+                
                 <form id="ahorroForm">
                     <div class="form-group">
                         <label for="ahorro">Ahorro Actual ($)</label>
@@ -51,10 +51,10 @@
 
                     <div class="form-group">
                         <label for="metaAhorro">Meta de ahorro ($)</label>
-                        <label type="text" id="metaAhorroTexto"></label>
+                        <input type="text" id="metaAhorroTexto" readonly>
                         <input type="number" id="metaAhorroInput" min="1" step="0.01" placeholder="100.00" onchange="actualizarMetaAhorro()">
                     </div>
-
+                    
                     <div class="progress-container">
                         <div class="progress-bar" id="progressBar" data-progress="0"></div>
                     </div>

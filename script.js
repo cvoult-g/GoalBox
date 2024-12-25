@@ -141,11 +141,11 @@ function guardarProgreso() {
 }
 
 function cargarProgreso() {
-    const ahorroInput = document.getElementById('ahorro');
-    const faltaInput = document.getElementById("metaAhorro")
+    const metaAhorroTexto = document.getElementById('metaAhorroTexto');
+    const metaAhorroInput = document.getElementById('metaAhorroInput');
     const datos = JSON.parse(localStorage.getItem('ahorro'));
 
-    if (!ahorroInput || !faltaInput) {
+    if (!metaAhorroTexto || !metaAhorroInput) {
         console.error('Elemento del DOM no encontrado.');
         return;
     }
@@ -263,16 +263,23 @@ function cerrarVentanaExportar() {
 }
 
 function actualizarMetaAhorro() {
-    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value);
+    const nuevaMetaInput = document.getElementById("metaAhorroInput");
+    const nuevaMetaTexto = document.getElementById("metaAhorroTexto");
+
+    if (!nuevaMetaInput || !nuevaMetaTexto) {
+        console.error('Elemento del DOM no encontrado.');
+        return;
+    }
+
+    const nuevaMeta = parseFloat(nuevaMetaInput.value);
     const ahorroActual = parseFloat(document.getElementById("ahorro").value || 0);
-    const faltaInput = document.getElementById("metaAhorroTexto");
 
     if (esNumeroValido(nuevaMeta) && nuevaMeta > 0) {
         const falta = Math.max(nuevaMeta - ahorroActual, 0).toFixed(2);
-        faltaInput.value = `Falta por ahorrar: $${falta}`;
+        nuevaMetaTexto.value = `Falta por ahorrar: $${falta}`;
         localStorage.setItem("metaAhorro", nuevaMeta);
     } else {
-        faltaInput.value = '';
+        nuevaMetaTexto.value = '';
     }
 }
 
