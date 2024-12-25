@@ -264,12 +264,15 @@ function cerrarVentanaExportar() {
 
 function actualizarMetaAhorro() {
     const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value);
+    const ahorroActual = parseFloat(document.getElementById("ahorro").value || 0);
+    const faltaInput = document.getElementById("metaAhorroTexto");
+
     if (esNumeroValido(nuevaMeta) && nuevaMeta > 0) {
+        const falta = Math.max(nuevaMeta - ahorroActual, 0).toFixed(2);
+        faltaInput.value = `Falta por ahorrar: $${falta}`;
         localStorage.setItem("metaAhorro", nuevaMeta);
-        actualizarProgressBar(parseFloat(document.getElementById("ahorro").value || 0));
-        mostrarMenu("fa-check", "Nueva meta establecida:  $${nuevaMeta.toFixed(2)}");
     } else {
-        mostrarMensaje('fa-exclamation-triangle', 'Por favor ingresa una meta válida.');
+        faltaInput.value = '';
     }
 }
 
