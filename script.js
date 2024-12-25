@@ -351,6 +351,8 @@ function actualizarMetaAhorro() {
             ? '¡Felicidades! Has alcanzado tu meta de ahorro.'
             : `Progreso: ${progreso.toFixed(2)}%`;
     }
+
+    actualizarProgressBar(datos.ahorro);
 }
 
 // Sistema de etiquetas
