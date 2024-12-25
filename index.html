@@ -4,32 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Ahorro</title>
+    <link rel="stylesheet" href="style-dark.css">
+    <script src="script.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style-dark.css">
-    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <h1><i class="fas fa-piggy-bank"></i> Gestor de Ahorros</h1>
+        <h1><i class="fas fa-piggy-bank"></i> Goalbox</h1>
         <div class="main-grid">
+            
             <div class="form-container">
-                <!-- Botones de Control -->
                 <div class="menu-container">
-                    <button onclick="guardarProgreso()">
+                    <button onclick="guardarProgreso()" id="guardarProgreso">
                         <i class="fas fa-save"></i> Guardar
                     </button>
                     <button onclick="cargarProgreso()">
                         <i class="fas fa-sync-alt"></i> Cargar
                     </button>
                     <button onclick="eliminarGuardado()" class="primary-btn">
-                        <i class="fas fa-trash"></i> Borrar
+                        <i class="fas fa-trash"></i>Borrar
                     </button>
                 </div>
                 
-                <!-- Formulario Principal -->
                 <form id="ahorroForm">
                     <div class="form-group">
                         <label for="ahorro">Ahorro Actual ($)</label>
@@ -38,7 +37,7 @@
 
                     <div class="form-group">
                         <label for="nuevoAhorro">Nuevo Ahorro ($)</label>
-                        <div class="add-min">
+                        <div class="add-min" style="display: flex; gap: 8px;">
                             <input type="number" id="nuevoAhorro" min="0" step="0.01" placeholder="0.00">
                             <button type="button" onclick="manejarAhorro(true)" class="primary-btn">
                                 <i class="fas fa-plus"></i>
@@ -50,10 +49,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="metaAhorroInput">Meta de ahorro ($)</label>
-                        <input type="number" id="metaAhorroInput" min="1" step="0.01" placeholder="100.00">
-                        <label id="metaAhorroTexto"></label>
-                    </div>
+                        <label for="metaAhorro">Meta de ahorro ($)</label>
+                        <input type="number" id="metaAhorroInput" min="1" step="0.01" placeholder="100.00" onchange="actualizarMetaAhorro()">
+                        <label id="metaAhorroTexto"></label> <!-- Texto mostrando cuánto falta para la meta -->
+                    </div>                    
                     
                     <div class="progress-container">
                         <div class="progress-bar" id="progressBar" data-progress="0"></div>
@@ -63,7 +62,7 @@
                 </form>
             </div>
 
-            <!-- Panel de Estadísticas -->
+            <!-- Contenedor de estadísticas y opciones -->
             <div class="stats-container">
                 <div class="menu-containerStatistics">
                     <button onclick="mostrarMenu('exportar')">
@@ -73,13 +72,11 @@
                         <i class="fas fa-upload"></i> Importar
                     </button>
                 </div>
-
                 <div class="statistics-list" id="historialContainer">
                     <h2>Historial de Ahorros</h2>
                     <ul id="estadisticasList"></ul>
                 </div>
 
-                <!-- Menú Exportar -->
                 <div class="menu-flotante" id="menuExportar" style="display:none;">
                     <h3>Exportar Datos</h3>
                     <textarea id="jsonExportar" readonly></textarea>
@@ -91,8 +88,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Menú Importar -->
+        
                 <div class="menu-flotante" id="menuImportar" style="display:none;">
                     <h3>Importar Datos</h3>
                     <input type="file" id="importarArchivo" accept=".json">
@@ -102,8 +98,10 @@
                         <button onclick="importarJSON()" class="primary-btn">Importar</button>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
+
 </body>
 </html>
