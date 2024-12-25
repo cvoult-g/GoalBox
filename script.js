@@ -141,7 +141,7 @@ function guardarProgreso() {
 
         const datos = { ahorro: ahorroActual, meta };
 
-        localStorage.setItem('progresoAhorro', JSON.stringify(datos));
+        localStorage.setItem('ahorro', JSON.stringify(datos));
         mostrarMensaje('fa-check-circle', 'Progreso guardado correctamente.');
     } else {
         mostrarMensaje('fa-exclamation-triangle', 'No se pudo guardar el progreso.');
@@ -154,10 +154,11 @@ function cargarProgreso() {
     const datos = JSON.parse(localStorage.getItem('ahorro'));
 
     if (datos) {
-        metaAhorroTexto.textContent = datos.metaAhorro || 0;
+        metaAhorroInput.value = datos.meta || 0;
+        metaAhorroTexto.textContent = `Falta: $${(datos.meta - datos.ahorro).toFixed(2)}`;
         actualizarProgressBar(datos.ahorro);
         actualizarListaEstadisticas();
-        mostrarMensaje('fa-sync-alt', `Datos cargados: ${new Date(datos.ultimaActualizacion).toLocaleDateString('es-ES')}`);
+        mostrarMensaje('fa-sync-alt', `Datos cargados: ${new Date().toLocaleDateString('es-ES')}`);
     } else {
         mostrarMensaje('fa-exclamation-triangle', 'No hay datos guardados');
     }
