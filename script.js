@@ -60,7 +60,7 @@ function manejarAhorro(isAddition) {
         const falta = Math.max(nuevaMeta - totalRedondeado, 0).toFixed(2);
 
         ahorroInput.value = totalRedondeado;
-        document.getElementById('faltaPorAhorar').value = falta;
+        document.getElementById('faltaInput').value = falta;
 
         actualizarProgressBar(totalRedondeado);
 
@@ -151,7 +151,7 @@ function eliminarGuardado() {
         localStorage.removeItem('estadisticas');
 
         document.getElementById('ahorro').value = '';
-        document.getElementById('faltaPorAhorar').value = '';
+        document.getElementById('faltaInput').value = '';
         document.getElementById('nuevoAhorro').value = '';
         document.getElementById('estadisticasList').innerHTML = '';
 
