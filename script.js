@@ -189,6 +189,7 @@ function eliminarGuardado() {
 // Exportar e importar JSON
 function exportarJSON() {
     const datos = {
+        metaAhorro: parseFloat(document.getElementById("metaAhorro").value),
         ahorro: document.getElementById('ahorro').value,
         estadisticas: JSON.parse(localStorage.getItem('estadisticas')) || [],
         fecha_exportacion: new Date().toISOString()
@@ -232,6 +233,7 @@ function procesarDatosImportados(contenidoJSON) {
         if (datos.ahorro !== undefined) {
             localStorage.setItem('ahorro', JSON.stringify(datos));
             localStorage.setItem('estadisticas', JSON.stringify(datos.estadisticas || []));
+            localStorage.setItem("metaAhorro", JSON.stringify(datos.metaAhorro))
 
             cargarProgreso();
             cerrarVentanaImportar();
