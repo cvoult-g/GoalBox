@@ -353,7 +353,7 @@ function actualizarMetaAhorro() {
 
         if (resultado) {
             resultado.textContent = progreso >= 100 
-                ? '¡Felicidades! Has alcanzado tu meta de ahorro.'
+                ? '¡Felicidades! Has alcanzado tu meta de ahorro.' 
                 : `Progreso: ${progreso.toFixed(2)}%`; // Formatea el porcentaje con 2 decimales
 
             if (progreso >= 100) {
@@ -367,7 +367,6 @@ function actualizarMetaAhorro() {
         console.error('Meta de ahorro no válida.');
     }
 }
-
 
 // Sistema de etiquetas
 function agregarEtiqueta(indice, etiqueta) {
@@ -429,6 +428,12 @@ window.addEventListener('load', () => {
     configurarBackupAutomatico();
     inicializarEventListeners();
     cargarProgreso();
+
+    // Agregar event listener al input de metaAhorro para actualizar el progress bar
+    const metaAhorroInput = document.getElementById('metaAhorroInput');
+    if (metaAhorroInput) {
+        metaAhorroInput.addEventListener('input', actualizarMetaAhorro);
+    }
 });
 
 // Manejo de errores global
