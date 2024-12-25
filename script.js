@@ -137,6 +137,21 @@ function actualizarListaEstadisticas() {
     });
 }
 
+const boton = document.getElementById('guardarProgreso');
+if (boton) {
+    boton.addEventListener('click', manejarAhorro);
+} else {
+    console.error('Botón guardarProgreso no encontrado.');
+}
+
+const metaAhorroInput = document.getElementById('metaAhorroInput');
+if (metaAhorroInput) {
+    const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
+} else {
+    console.error('Elemento metaAhorroInput no encontrado.');
+}
+
+
 function guardarProgreso() {
     const ahorroInput = document.getElementById('ahorro');
     const metaAhorroInput = document.getElementById('metaAhorroInput'); // Revisar si existe
