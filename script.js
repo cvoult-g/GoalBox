@@ -195,8 +195,9 @@ function exportarJSON() {
     const ahorroInput = document.getElementById('ahorro');
 
     if (metaAhorroInput && ahorroInput) {
-        const metaAhorro = parseFloat(metaAhorroInput.value);
-        const ahorro = parseFloat(ahorroInput.value);
+        const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
+        const ahorro = parseFloat(ahorroInput.value) || 0;
+
         const deficit = Math.max(metaAhorro - ahorro, 0).toFixed(2);
         const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
 
@@ -216,10 +217,13 @@ function exportarJSON() {
         downloadLink.download = 'mis_ahorros.json';
 
         const exportarLink = document.getElementById('jsonExportarLink');
-        exportarLink.innerHTML = '';
+        exportarLink.innerHTML = ''; // Limpia el contenido anterior
         exportarLink.appendChild(downloadLink);
         downloadLink.innerHTML = `<i class="fas fa-file-download"></i> Descargar JSON`;
+
+        mostrarMensaje('fa-check-circle', 'Datos exportados correctamente. Haz clic en "Descargar JSON" para guardarlos.');
     } else {
+        mostrarMensaje('fa-exclamation-circle', 'Error: No se pudo acceder a los datos de ahorro o meta.');
         console.error('No se pudo acceder a metaAhorro o ahorro.');
     }
 }
