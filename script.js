@@ -67,12 +67,13 @@ function manejarAhorro(isAddition) {
     const ahorroInput = document.getElementById('ahorro');
     const nuevoAhorroInput = document.getElementById('nuevoAhorro');
     const metaAhorroInput = document.getElementById('metaAhorroInput');
+    const metaAhorroTexto = document.getElementById('metaAhorroTexto');
 
     const ahorroActual = parseFloat(ahorroInput.value) || 0;
     const nuevoAhorro = parseFloat(nuevoAhorroInput.value);
 
     if (esNumeroValido(nuevoAhorro) && nuevoAhorro > 0) {
-        const nuevaMeta = parseFloat(metaAhorroInput.value);
+        const nuevaMeta = parseFloat(metaAhorroInput.value) || 0;
         const nuevoTotal = isAddition ? 
             (ahorroActual + nuevoAhorro) : 
             Math.max(ahorroActual - nuevoAhorro, 0);
@@ -81,11 +82,14 @@ function manejarAhorro(isAddition) {
         const falta = Math.max(nuevaMeta - totalRedondeado, 0).toFixed(2);
 
         ahorroInput.value = totalRedondeado;
-        document.getElementById('faltaInput').value = falta;
+
+        if (metaAhorroTexto) {
+            metaAhorroTexto.textContent = `Faltan: $${falta}`;
+        }
 
         actualizarProgressBar(totalRedondeado);
 
-        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / nuevaMeta) * 100).toFixed(1)}% de tu meta)`);
+        mostrarMensaje('fa-info-circle', `Has ahorrado $${totalRedondeado.toFixed(2)} (${((totalRedondeado / nuevaMeta) * 100).toFixed(1)}% de tu meta)`);
 
         guardarEnEstadisticas(totalRedondeado);
         nuevoAhorroInput.value = '';
@@ -93,6 +97,12 @@ function manejarAhorro(isAddition) {
         mostrarMensaje('fa-exclamation-triangle', 'Por favor ingresa una cantidad válida.');
     }
 }
+
+// Función auxiliar para validar números
+function esNumeroValido(valor) {
+    return !isNaN(valor) && typeof valor === 'number';
+}
+
 
 function guardarEnEstadisticas(ahorro) {
     const fecha = new Date().toLocaleDateString('es-ES', {
