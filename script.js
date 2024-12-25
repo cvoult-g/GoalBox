@@ -35,11 +35,6 @@ function mostrarMenu(tipo) {
 function actualizarProgressBar(valor) {
     const metaAhorro = document.getElementById("metaAhorroInput");
 
-    if (isNaN(valor) || valor < 0) {
-        console.error('El valor proporcionado no es válido:', valor);
-        return;
-    }
-
     if (!metaAhorro || metaAhorro.value === null || metaAhorro.value === '') {
         console.error('Elemento metaAhorro no encontrado o no tiene valor.');
         return;
@@ -62,6 +57,7 @@ function actualizarProgressBar(valor) {
         console.log('El progreso ya está actualizado.');
     }
 }
+
 
 // Manejo de ahorro
 function manejarAhorro(isAddition) {
