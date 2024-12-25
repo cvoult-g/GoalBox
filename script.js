@@ -34,13 +34,29 @@ function mostrarMenu(tipo) {
 
 // Barra de progreso
 function actualizarProgressBar(valor) {
-    const porcentaje = Math.min((valor / 100) * 100, 100);
+    if (isNaN(valor) || valor < 0) {
+        console.error('El valor proporcionado no es válido:', valor);
+        return;
+    }
+
     const progressBar = document.getElementById('progressBar');
+    if (!progressBar) {
+        console.error('Elemento progressBar no encontrado.');
+        return;
+    }
+
+    const porcentaje = Math.min((valor / 100) * 100, 100);
+    console.log('Progreso calculado:', porcentaje, '%');
+
     if (progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
         progressBar.style.width = porcentaje + '%';
         progressBar.setAttribute('data-progress', Math.round(porcentaje));
+        console.log('Progreso actualizado a:', porcentaje, '%');
+    } else {
+        console.log('El progreso ya está actualizado.');
     }
 }
+
 
 // Manejo de ahorro
 function manejarAhorro(isAddition) {
