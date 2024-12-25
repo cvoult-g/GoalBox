@@ -33,13 +33,33 @@ function mostrarMenu(tipo) {
 }
 
 function actualizarProgressBar(valor) {
-    const progressBar = document.getElementById('progressBar'); // Elemento de barra de progreso
+    const metaAhorro = document.getElementById("metaAhorroInput");
+    const metaAhorroTexto = document.getElementById("metaAhorroTexto");
 
-    if (progressBar) {
-        let porcentaje = (valor / 1000) * 100; // Calcular porcentaje del objetivo
-        progressBar.style.width = porcentaje + '%'; // Actualizar estilo de ancho
-    } else {
+    if (!metaAhorro || metaAhorro.value === null || metaAhorro.value === '') {
+        console.error('Elemento metaAhorro no encontrado o no tiene valor.');
+        return;
+    }
+
+    const progressBar = document.getElementById('progressBar');
+    if (!progressBar) {
         console.error('Elemento progressBar no encontrado.');
+        return;
+    }
+
+    const porcentaje = Math.min((valor / metaAhorro.value) * 100, 100);
+    console.log('Progreso calculado:', porcentaje, '%');
+
+    if (metaAhorroTexto) {
+        metaAhorroTexto.textContent = `Falta: $${(metaAhorro.value - valor).toFixed(2)}`;
+    }
+
+    if (progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
+        progressBar.style.width = porcentaje + '%';
+        progressBar.setAttribute('data-progress', Math.round(porcentaje));
+        console.log('Progreso actualizado a:', porcentaje, '%');
+    } else {
+        console.log('El progreso ya está actualizado.');
     }
 }
 
