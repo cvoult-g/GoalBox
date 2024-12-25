@@ -33,25 +33,22 @@ function mostrarMenu(tipo) {
 }
 
 function actualizarProgressBar(valor) {
-    const metaAhorroInput = document.getElementById("metaAhorroInput");
+    const progressBar = document.getElementById('progressBar'); // Elemento de barra de progreso
 
-    if (!metaAhorroInput || metaAhorroInput.value === null || metaAhorroInput.value === '') {
-        console.error('Elemento metaAhorro no encontrado o no tiene valor.');
-        return;
-    }
-
-    const metaAhorro = parseFloat(metaAhorroInput.value);
-    const progressBar = document.getElementById('progressBar');
-    if (!progressBar) {
+    if (progressBar) {
+        let porcentaje = (valor / 1000) * 100; // Calcular porcentaje del objetivo
+        progressBar.style.width = porcentaje + '%'; // Actualizar estilo de ancho
+    } else {
         console.error('Elemento progressBar no encontrado.');
-        return;
     }
+}
 
-    const porcentaje = Math.min((valor / metaAhorro) * 100, 100);
-    console.log('Progreso calculado:', porcentaje, '%');
-
-    progressBar.style.width = porcentaje + '%';
-    progressBar.setAttribute('data-progress', Math.round(porcentaje));
+// Ejemplo de llamada a la función manejarAhorro al hacer clic en un botón
+const boton = document.getElementById('guardarProgreso');
+if (boton) {
+    boton.addEventListener('click', manejarAhorro);
+} else {
+    console.error('Botón guardarProgreso no encontrado.');
 }
 
 // Manejo de ahorro
