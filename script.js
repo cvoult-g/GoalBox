@@ -150,10 +150,15 @@ function eliminarGuardado() {
         localStorage.removeItem('ahorro');
         localStorage.removeItem('estadisticas');
 
-        document.getElementById('ahorro').value = '';
-        document.getElementById('faltaInput').value = '';
-        document.getElementById('nuevoAhorro').value = '';
-        document.getElementById('estadisticasList').innerHTML = '';
+        const ahorroInput = document.getElementById('ahorro');
+        const faltaInput = document.getElementById('faltaPorAhorar');
+        const nuevoAhorroInput = document.getElementById('nuevoAhorro');
+        const estadisticasList = document.getElementById('estadisticasList');
+
+        if (ahorroInput) ahorroInput.value = '';
+        if (faltaInput) faltaInput.value = '';
+        if (nuevoAhorroInput) nuevoAhorroInput.value = '';
+        if (estadisticasList) estadisticasList.innerHTML = '';
 
         actualizarProgressBar(0);
 
