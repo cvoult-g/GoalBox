@@ -34,6 +34,8 @@ function mostrarMenu(tipo) {
 
 // Barra de progreso
 function actualizarProgressBar(valor) {
+    const faltaInput = document.getElementById("metaAhorro")
+
     if (isNaN(valor) || valor < 0) {
         console.error('El valor proporcionado no es válido:', valor);
         return;
