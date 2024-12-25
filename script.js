@@ -46,6 +46,7 @@ function actualizarProgressBar(valor) {
 function manejarAhorro(isAddition) {
     const ahorroInput = document.getElementById('ahorro');
     const nuevoAhorroInput = document.getElementById('nuevoAhorro');
+    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value);
 
     const ahorroActual = parseFloat(ahorroInput.value) || 0;
     const nuevoAhorro = parseFloat(nuevoAhorroInput.value);
@@ -120,7 +121,9 @@ function guardarProgreso() {
 }
 
 function cargarProgreso() {
+    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value);
     const datos = JSON.parse(localStorage.getItem('ahorro'));
+
     if (datos) {
         const ahorroInput = document.getElementById('ahorro');
         ahorroInput.value = datos.ahorro;
