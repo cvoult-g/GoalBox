@@ -341,19 +341,20 @@ function actualizarMetaAhorro() {
     const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
 
     if (metaAhorro > 0) {
-        const progreso = (ahorroActual / metaAhorro) * 100;
+        let progreso = (ahorroActual / metaAhorro) * 100;
+        progreso = Math.min(progreso, 100); // Asegura que no supere 100%
 
         const progressBar = document.getElementById('progressBar');
         const resultado = document.getElementById('resultado');
 
         if (progressBar) {
-            progressBar.style.width = `${Math.min(progreso, 100)}%`; // Asegura que no supere 100%
+            progressBar.style.width = `${progreso}%`; // Actualiza el ancho del progress bar
         }
 
         if (resultado) {
             resultado.textContent = progreso >= 100 
                 ? '¡Felicidades! Has alcanzado tu meta de ahorro.'
-                : `Progreso: ${progreso.toFixed(2)}%`;
+                : `Progreso: ${progreso.toFixed(2)}%`; // Formatea el porcentaje con 2 decimales
 
             if (progreso >= 100) {
                 resultado.classList.add('complete');
@@ -366,6 +367,7 @@ function actualizarMetaAhorro() {
         console.error('Meta de ahorro no válida.');
     }
 }
+
 
 // Sistema de etiquetas
 function agregarEtiqueta(indice, etiqueta) {
