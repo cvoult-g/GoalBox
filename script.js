@@ -221,3 +221,18 @@ function cerrarVentanaImportar() {
 function cerrarVentanaExportar() {
     document.getElementById('menuExportar').style.display = 'none';
 }
+
+function actualizarMetaAhorro() {
+    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value);
+    if (esNumeroValido(nuevaMeta) && nuevaMeta > 0) {
+        localStorage.setItem("metaAhorro", nuevaMeta);
+        actualizarProgressBar(parseFloat(document.getElementById("ahorro").value || 0));
+        mostrarMenu("fa-check", "Nueva meta establecida:  $${nuevaMeta.toFixed(2)}");
+    } else {
+        mostrarMensaje('fa-exclamation-triangle', 'Por favor ingresa una meta válida.');
+    }
+}
+
+function obtenerMetaAhorro() {
+    return parseFloat(localStorage.getItem('metaAhorro')) || 100;
+}

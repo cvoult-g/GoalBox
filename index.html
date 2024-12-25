@@ -49,10 +49,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="faltaPorAhorar">Falta por Ahorrar ($)</label>
-                        <input type="number" id="faltaPorAhorar" value="100" disabled>
+                        <label for="mataAhorro">Meta de ahorro ($)</label>
+                        <input type="number" id="metaAhorro" min="1" step="0.01" placeholder="100.00" onchange="actualizarMetaAhorro()">
                     </div>
-
+                    
                     <div class="progress-container">
                         <div class="progress-bar" id="progressBar" data-progress="0"></div>
                     </div>
