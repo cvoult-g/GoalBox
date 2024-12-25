@@ -129,8 +129,10 @@ function actualizarListaEstadisticas() {
 function guardarProgreso() {
     const ahorro = document.getElementById('ahorro').value;
     const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
+    const faltaInput = parseFloat(document.getElementById("metaAhorro").value);
     localStorage.setItem('ahorro', JSON.stringify({ 
-        ahorro, 
+        ahorro,
+        metaAhorro,
         estadisticas,
         ultimaActualizacion: new Date().toISOString()
     }));
