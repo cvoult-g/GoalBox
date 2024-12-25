@@ -181,7 +181,7 @@ function eliminarGuardado() {
 }
 
 function exportarJSON() {
-    const metaAhorroInput = document.getElementById("metaAhorro");
+    const metaAhorroInput = document.getElementById("metaAhorroInput");
     const ahorroInput = document.getElementById('ahorro');
 
     if (metaAhorroInput && ahorroInput) {
@@ -260,9 +260,6 @@ function cerrarVentanaImportar() {
 function cerrarVentanaExportar() {
     document.getElementById('menuExportar').style.display = 'none';
 }
-
-// Accediendo al elemento 'metaAhorroInput' mediante su ID
-const metaAhorroInput = document.getElementById('metaAhorroInput');
 
 // Función para actualizar el progreso basándose en la meta de ahorro
 function actualizarMetaAhorro() {
