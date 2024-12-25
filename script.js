@@ -140,31 +140,32 @@ function guardarProgreso() {
     mostrarMensaje('fa-check', 'Progreso guardado correctamente');
 }
 
-// Accediendo al elemento 'metaAhorroInput' mediante su ID
-const metaAhorroInput = document.getElementById('metaAhorroInput');
+function cargarProgreso() {
+    const metaAhorroTexto = document.getElementById('metaAhorroTexto');
+    const metaAhorroInput = document.getElementById('metaAhorroInput');
+    const ahorroInput = document.getElementById('ahorro');  // Verificar que este elemento exista
+    const faltaInput = document.getElementById('faltaInput');  // Verificar que este elemento exista
+    const datos = JSON.parse(localStorage.getItem('ahorro'));
 
-// Función para actualizar el progreso basándose en la meta de ahorro
-function actualizarMetaAhorro() {
-    const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
-    const ahorroActual = parseFloat(document.getElementById('ahorro').value) || 0;
-    const progreso = (ahorroActual / metaAhorro) * 100;
+    if (!metaAhorroTexto || !metaAhorroInput || !ahorroInput || !faltaInput) {
+        console.error('Elemento del DOM no encontrado.');
+        return;
+    }
 
-    // Actualizar la barra de progreso
-    const progressBar = document.getElementById('progressBar');
-    progressBar.style.width = `${progreso}%`;
+    if (datos) {
+        ahorroInput.value = datos.ahorro || 0;
 
-    // Mostrar mensaje o resultados dependiendo del progreso
-    const resultado = document.getElementById('resultado');
-    if (progreso >= 100) {
-        resultado.textContent = '¡Felicidades! Has alcanzado tu meta de ahorro.';
+        const falta = Math.max(obtenerMetaAhorro() - parseFloat(datos.ahorro), 0).toFixed(2);
+        faltaInput.value = falta;
+
+        actualizarProgressBar(datos.ahorro);
+        actualizarListaEstadisticas();
+
+        mostrarMensaje('fa-sync-alt', `Datos cargados: ${new Date(datos.ultimaActualizacion).toLocaleDateString('es-ES')}`);
     } else {
-        resultado.textContent = `Progreso: ${progreso.toFixed(2)}%`;
+        mostrarMensaje('fa-exclamation-triangle', 'No hay datos guardados');
     }
 }
-
-// Escuchar cambios en 'metaAhorroInput' para actualizar la meta de ahorro
-metaAhorroInput.addEventListener('input', actualizarMetaAhorro);
-
 
 function eliminarGuardado() {
     if (confirm('¿Estás seguro de que deseas eliminar todo tu progreso guardado?')) {
@@ -263,26 +264,30 @@ function cerrarVentanaExportar() {
     document.getElementById('menuExportar').style.display = 'none';
 }
 
+// Accediendo al elemento 'metaAhorroInput' mediante su ID
+const metaAhorroInput = document.getElementById('metaAhorroInput');
+
+// Función para actualizar el progreso basándose en la meta de ahorro
 function actualizarMetaAhorro() {
-    const nuevaMetaInput = document.getElementById("metaAhorroInput");
-    const nuevaMetaTexto = document.getElementById("metaAhorroTexto");
+    const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
+    const ahorroActual = parseFloat(document.getElementById('ahorro').value) || 0;
+    const progreso = (ahorroActual / metaAhorro) * 100;
 
-    if (!nuevaMetaInput || !nuevaMetaTexto) {
-        console.error('Elemento del DOM no encontrado.');
-        return;
-    }
+    // Actualizar la barra de progreso
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = `${progreso}%`;
 
-    const nuevaMeta = parseFloat(nuevaMetaInput.value);
-    const ahorroActual = parseFloat(document.getElementById("ahorro").value || 0);
-
-    if (esNumeroValido(nuevaMeta) && nuevaMeta > 0) {
-        const falta = Math.max(nuevaMeta - ahorroActual, 0).toFixed(2);
-        nuevaMetaTexto.value = `Falta por ahorrar: $${falta}`;
-        localStorage.setItem("metaAhorro", nuevaMeta);
+    // Mostrar mensaje o resultados dependiendo del progreso
+    const resultado = document.getElementById('resultado');
+    if (progreso >= 100) {
+        resultado.textContent = '¡Felicidades! Has alcanzado tu meta de ahorro.';
     } else {
-        nuevaMetaTexto.value = '';
+        resultado.textContent = `Progreso: ${progreso.toFixed(2)}%`;
     }
 }
+
+// Escuchar cambios en 'metaAhorroInput' para actualizar la meta de ahorro
+metaAhorroInput.addEventListener('input', actualizarMetaAhorro);
 
 function obtenerMetaAhorro() {
     return parseFloat(localStorage.getItem('metaAhorro')) || 100;
