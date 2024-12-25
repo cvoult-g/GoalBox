@@ -55,13 +55,6 @@ function actualizarProgressBar(valor) {
     }
 }
 
-const boton = document.getElementById('guardarProgreso');
-if (boton) {
-    boton.addEventListener('click', manejarAhorro);
-} else {
-    console.error('Botón guardarProgreso no encontrado.');
-}
-
 // Manejo de ahorro
 function manejarAhorro(isAddition) {
     const ahorroInput = document.getElementById('ahorro');
