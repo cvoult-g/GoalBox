@@ -32,9 +32,8 @@ function mostrarMenu(tipo) {
     }
 }
 
-// Barra de progreso
 function actualizarProgressBar(valor) {
-    const faltaInput = document.getElementById("metaAhorro")
+    const metaAhorro = document.getElementById("metaAhorro");  // Ajuste directo a metaAhorro
 
     if (isNaN(valor) || valor < 0) {
         console.error('El valor proporcionado no es válido:', valor);
@@ -47,7 +46,7 @@ function actualizarProgressBar(valor) {
         return;
     }
 
-    const porcentaje = Math.min((valor / faltaInput.value) * 100, 100);
+    const porcentaje = Math.min((valor / metaAhorro.value) * 100, 100);
     console.log('Progreso calculado:', porcentaje, '%');
 
     if (progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
@@ -58,7 +57,6 @@ function actualizarProgressBar(valor) {
         console.log('El progreso ya está actualizado.');
     }
 }
-
 
 // Manejo de ahorro
 function manejarAhorro(isAddition) {
