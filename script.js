@@ -73,12 +73,12 @@ if (boton) {
 
 // Manejo de ahorro
 function manejarAhorro(isAddition) {
-    const ahorroInput = document.getElementById('ahorro');
-    const nuevoAhorroInput = document.getElementById('nuevoAhorro');
-    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value);
+    const ahorroInput = document.getElementById('ahorro'); // Elemento de ahorro
+    const nuevoAhorroInput = document.getElementById('nuevoAhorro'); // Elemento para el nuevo ahorro
+    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value); // Meta de ahorro
 
-    const ahorroActual = parseFloat(ahorroInput.value) || 0;
-    const nuevoAhorro = parseFloat(nuevoAhorroInput.value);
+    const ahorroActual = parseFloat(ahorroInput.value) || 0; // Ahorro actual
+    const nuevoAhorro = parseFloat(nuevoAhorroInput.value); // Nuevo ahorro
 
     if (esNumeroValido(nuevoAhorro) && nuevoAhorro > 0) {
         const nuevoTotal = isAddition ? 
@@ -93,7 +93,7 @@ function manejarAhorro(isAddition) {
 
         actualizarProgressBar(totalRedondeado);
 
-        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / 100) * 100).toFixed(1)}% de tu meta)`);
+        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / nuevaMeta) * 100).toFixed(1)}% de tu meta)`);
 
         guardarEnEstadisticas(totalRedondeado);
         nuevoAhorroInput.value = '';
