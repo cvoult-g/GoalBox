@@ -362,7 +362,6 @@ function actualizarMetaAhorro() {
             }
         }
 
-        actualizarProgressBar();
     } else {
         console.error('Meta de ahorro no válida.');
     }
