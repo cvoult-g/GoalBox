@@ -50,8 +50,11 @@
 
                     <div class="form-group">
                         <label for="metaAhorro">Meta de ahorro ($)</label>
-                        <input type="number" id="metaAhorroInput" min="1" step="0.01" placeholder="100.00" onchange="actualizarMetaAhorro()">
-                        <span id="metaAhorroTexto"></span> <!-- Texto mostrando cuánto falta para la meta -->
+                        <div style="display: flex;">
+                            <input type="number" id="metaAhorroInput" min="1" step="0.01" placeholder="100.00" onchange="actualizarMetaAhorro()">
+                            <span id="metaAhorroTexto"></span> <!-- Texto mostrando cuánto falta para la meta -->
+    
+                        </div>
                     </div>                    
                     
                     <div class="progress-container">
