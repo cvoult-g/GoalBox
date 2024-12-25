@@ -125,7 +125,7 @@ function cargarProgreso() {
     const faltaInput = document.getElementById("metaAhorro")
     const datos = JSON.parse(localStorage.getItem('ahorro'));
 
-    if (!ahorroInput) {
+    if (!ahorroInput || !faltaInput) {
         console.error('Elemento del DOM no encontrado.');
         return;
     }
