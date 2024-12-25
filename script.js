@@ -151,6 +151,9 @@ function cargarProgreso() {
     }
 
     if (datos) {
+        const ahorroInput = document.getElementById('ahorro');  // Esto debería ser el mismo ahorroInput
+        const faltaInput = document.getElementById('faltaInput');  // Deberías usar el mismo faltaInput
+
         ahorroInput.value = datos.ahorro || 0;
 
         const falta = Math.max(obtenerMetaAhorro() - parseFloat(datos.ahorro), 0).toFixed(2);
