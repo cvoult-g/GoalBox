@@ -45,7 +45,7 @@ function actualizarProgressBar(valor) {
         return;
     }
 
-    const porcentaje = Math.min((valor / 100) * 100, 100);
+    const porcentaje = Math.min((valor / faltaInput) * 100, 100);
     console.log('Progreso calculado:', porcentaje, '%');
 
     if (progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
