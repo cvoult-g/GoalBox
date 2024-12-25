@@ -56,7 +56,7 @@ function manejarAhorro(isAddition) {
             Math.max(ahorroActual - nuevoAhorro, 0);
 
         const totalRedondeado = parseFloat(nuevoTotal.toFixed(2));
-        const falta = Math.max(100 - totalRedondeado, 0).toFixed(2);
+        const falta = Math.max(nuevaMeta - totalRedondeado, 0).toFixed(2);
 
         ahorroInput.value = totalRedondeado;
         document.getElementById('faltaPorAhorar').value = falta;
@@ -125,7 +125,7 @@ function cargarProgreso() {
         const ahorroInput = document.getElementById('ahorro');
         ahorroInput.value = datos.ahorro;
 
-        const falta = Math.max(100 - parseFloat(datos.ahorro), 0).toFixed(2);
+        const falta = Math.max(nuevaMeta - parseFloat(datos.ahorro), 0).toFixed(2);
         document.getElementById('faltaPorAhorar').value = falta;
 
         actualizarProgressBar(datos.ahorro);
