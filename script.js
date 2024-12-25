@@ -59,13 +59,14 @@ function actualizarProgressBar(valor) {
     const metaAhorroTexto = document.getElementById("metaAhorroTexto");
     if (!metaAhorroInput || !metaAhorroTexto) return;
 
-    const porcentaje = Math.min((valor / metaAhorroInput.value) * 100, 100);
+    const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
+    const porcentaje = Math.min((valor / metaAhorro) * 100, 100);
     const progressBar = document.getElementById('progressBar');
     
     if (progressBar && progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
         progressBar.style.width = porcentaje + '%';
         progressBar.setAttribute('data-progress', Math.round(porcentaje));
-        metaAhorroTexto.textContent = `Falta: $${(metaAhorroInput.value - valor).toFixed(2)}`;
+        metaAhorroTexto.textContent = `Falta: $${(metaAhorro - valor).toFixed(2)}`;
     }
 }
 
