@@ -73,14 +73,15 @@ if (boton) {
 
 // Manejo de ahorro
 function manejarAhorro(isAddition) {
-    const ahorroInput = document.getElementById('ahorro'); // Elemento de ahorro
-    const nuevoAhorroInput = document.getElementById('nuevoAhorro'); // Elemento para el nuevo ahorro
-    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value); // Meta de ahorro
+    const ahorroInput = document.getElementById('ahorro');
+    const nuevoAhorroInput = document.getElementById('nuevoAhorro');
+    const metaAhorroInput = document.getElementById('metaAhorroInput'); 
 
-    const ahorroActual = parseFloat(ahorroInput.value) || 0; // Ahorro actual
-    const nuevoAhorro = parseFloat(nuevoAhorroInput.value); // Nuevo ahorro
+    const ahorroActual = parseFloat(ahorroInput.value) || 0;
+    const nuevoAhorro = parseFloat(nuevoAhorroInput.value);
 
     if (esNumeroValido(nuevoAhorro) && nuevoAhorro > 0) {
+        const nuevaMeta = parseFloat(metaAhorroInput.value);
         const nuevoTotal = isAddition ? 
             (ahorroActual + nuevoAhorro) : 
             Math.max(ahorroActual - nuevoAhorro, 0);
@@ -93,7 +94,7 @@ function manejarAhorro(isAddition) {
 
         actualizarProgressBar(totalRedondeado);
 
-        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / nuevaMeta) * 100).toFixed(1)}% de tu meta)`);
+        mostrarMensaje('fa-info-circle', `Has ahorrado ${totalRedondeado.toFixed(2)}$ (${((totalRedondeado / 100) * 100).toFixed(1)}% de tu meta)`);
 
         guardarEnEstadisticas(totalRedondeado);
         nuevoAhorroInput.value = '';
@@ -138,11 +139,11 @@ function actualizarListaEstadisticas() {
 
 function guardarProgreso() {
     const ahorroInput = document.getElementById('ahorro');
-    const metaAhorro = document.getElementById('metaAhorroInput'); // Verificar si existe 'metaAhorro' o 'metaAhorroInput'
+    const metaAhorroInput = document.getElementById('metaAhorroInput'); // Revisar si existe
 
-    if (ahorroInput && metaAhorro) {
+    if (ahorroInput && metaAhorroInput) {
         const ahorroActual = parseFloat(ahorroInput.value) || 0;
-        const meta = parseFloat(metaAhorro.value) || 0;
+        const meta = parseFloat(metaAhorroInput.value) || 0;
 
         const datos = {
             ahorro: ahorroActual,
@@ -199,32 +200,38 @@ function eliminarGuardado() {
     }
 }
 
-// Exportar e importar JSON
 function exportarJSON() {
-    const metaAhorro = parseFloat(document.getElementById("metaAhorro").value);
-    const ahorro = document.getElementById('ahorro').value;
-    const deficit = Math.max(metaAhorro - parseFloat(ahorro), 0).toFixed(2);
-    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
+    const metaAhorroInput = document.getElementById("metaAhorro");
+    const ahorroInput = document.getElementById('ahorro');
 
-    const datos = {
-        metaAhorro,
-        ahorro,
-        deficit,
-        estadisticas,
-        fecha_exportacion: new Date().toISOString()
-    };
+    if (metaAhorroInput && ahorroInput) {
+        const metaAhorro = parseFloat(metaAhorroInput.value);
+        const ahorro = parseFloat(ahorroInput.value);
+        const deficit = Math.max(metaAhorro - ahorro, 0).toFixed(2);
+        const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
 
-    const jsonString = JSON.stringify(datos, null, 2);
-    document.getElementById('jsonExportar').value = jsonString;
+        const datos = {
+            metaAhorro,
+            ahorro,
+            deficit,
+            estadisticas,
+            fecha_exportacion: new Date().toISOString()
+        };
 
-    const downloadLink = document.createElement('a');
-    downloadLink.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(jsonString);
-    downloadLink.download = 'mis_ahorros.json';
+        const jsonString = JSON.stringify(datos, null, 2);
+        document.getElementById('jsonExportar').value = jsonString;
 
-    const exportarLink = document.getElementById('jsonExportarLink');
-    exportarLink.innerHTML = '';
-    exportarLink.appendChild(downloadLink);
-    downloadLink.innerHTML = `<i class="fas fa-file-download"></i> Descargar JSON`;
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(jsonString);
+        downloadLink.download = 'mis_ahorros.json';
+
+        const exportarLink = document.getElementById('jsonExportarLink');
+        exportarLink.innerHTML = '';
+        exportarLink.appendChild(downloadLink);
+        downloadLink.innerHTML = `<i class="fas fa-file-download"></i> Descargar JSON`;
+    } else {
+        console.error('No se pudo acceder a metaAhorro o ahorro.');
+    }
 }
 
 function importarJSON() {
