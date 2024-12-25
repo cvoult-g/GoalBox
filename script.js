@@ -347,7 +347,7 @@ function actualizarMetaAhorro() {
         const resultado = document.getElementById('resultado');
 
         if (progressBar) {
-            progressBar.style.width = `${progreso}%`;
+            progressBar.style.width = `${Math.min(progreso, 100)}%`; // Asegura que no supere 100%
         }
 
         if (resultado) {
