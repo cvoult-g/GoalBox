@@ -33,7 +33,7 @@ function mostrarMenu(tipo) {
 }
 
 function actualizarProgressBar(valor) {
-    const metaAhorro = document.getElementById("metaAhorro");
+    const metaAhorro = document.getElementById("metaAhorroInput");
 
     if (isNaN(valor) || valor < 0) {
         console.error('El valor proporcionado no es válido:', valor);
