@@ -99,21 +99,6 @@ function manejarAhorro(isAddition) {
     }
 }
 
-// Sistema de análisis
-function calcularEstadisticas() {
-    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
-    if (estadisticas.length < 2) return null;
-
-    const ahorros = estadisticas.map(e => e.ahorro);
-    return {
-        promedio: ahorros.reduce((a, b) => a + b, 0) / ahorros.length,
-        maximo: Math.max(...ahorros),
-        minimo: Math.min(...ahorros),
-        tendencia: calcularTendencia(estadisticas),
-        proyeccion: calcularProyeccion(estadisticas)
-    };
-}
-
 function calcularTendencia(estadisticas) {
     const ultimos = estadisticas.slice(-3);
     if (ultimos.length < 2) return 'neutral';
@@ -151,31 +136,6 @@ function actualizarListaEstadisticas() {
     const lista = document.getElementById('estadisticasList');
     lista.innerHTML = '';
     
-    const analisis = calcularEstadisticas();
-    if (analisis) {
-        const headerStats = document.createElement('div');
-        headerStats.className = 'stats-summary';
-        headerStats.innerHTML = `
-            <div class="stat-item">
-                <i class="fas fa-chart-line"></i>
-                <span>Promedio: $${analisis.promedio.toFixed(2)}</span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-arrow-up"></i>
-                <span>Máximo: $${analisis.maximo.toFixed(2)}</span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-arrow-down"></i>
-                <span>Mínimo: $${analisis.minimo.toFixed(2)}</span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-forecast"></i>
-                <span>Proyección: $${analisis.proyeccion?.toFixed(2) || 'N/A'}</span>
-            </div>
-        `;
-        lista.appendChild(headerStats);
-    }
-
     estadisticas.slice(-10).reverse().forEach(item => {
         const li = document.createElement('li');
         li.innerHTML = `
