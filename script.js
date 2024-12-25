@@ -336,32 +336,37 @@ function inicializarEventListeners() {
 }
 
 function actualizarMetaAhorro() {
-    const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
+    const metaAhorroInput = document.getElementById('metaAhorroInput');
     const ahorroActual = parseFloat(document.getElementById('ahorro').value) || 0;
-    const progreso = (ahorroActual / metaAhorro) * 100;
+    const metaAhorro = parseFloat(metaAhorroInput.value) || 0;
 
-    const progressBar = document.getElementById('progressBar');
-    const resultado = document.getElementById('resultado');
+    if (metaAhorro > 0) {
+        const progreso = (ahorroActual / metaAhorro) * 100;
 
-    if (progressBar) {
-        progressBar.style.width = `${progreso}%`;
-    }
+        const progressBar = document.getElementById('progressBar');
+        const resultado = document.getElementById('resultado');
 
-    if (resultado) {
-        resultado.textContent = progreso >= 100 
-            ? '¡Felicidades! Has alcanzado tu meta de ahorro.'
-            : `Progreso: ${progreso.toFixed(2)}%`;
-
-        if (progreso >= 100) {
-            resultado.classList.add('complete'); // Agrega una clase para estilizar el texto si se ha alcanzado la meta
-        } else {
-            resultado.classList.remove('complete'); // Remueve la clase si no se ha alcanzado la meta
+        if (progressBar) {
+            progressBar.style.width = `${progreso}%`;
         }
+
+        if (resultado) {
+            resultado.textContent = progreso >= 100 
+                ? '¡Felicidades! Has alcanzado tu meta de ahorro.'
+                : `Progreso: ${progreso.toFixed(2)}%`;
+
+            if (progreso >= 100) {
+                resultado.classList.add('complete');
+            } else {
+                resultado.classList.remove('complete');
+            }
+        }
+
+        actualizarProgressBar();
+    } else {
+        console.error('Meta de ahorro no válida.');
     }
-
-    actualizarProgressBar();
 }
-
 
 // Sistema de etiquetas
 function agregarEtiqueta(indice, etiqueta) {
