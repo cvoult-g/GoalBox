@@ -122,10 +122,9 @@ function guardarProgreso() {
 
 function cargarProgreso() {
     const ahorroInput = document.getElementById('ahorro');
-    const faltaInput = document.getElementById('faltaPorAhorar');
     const datos = JSON.parse(localStorage.getItem('ahorro'));
 
-    if (!ahorroInput || !faltaInput) {
+    if (!ahorroInput) {
         console.error('Elemento del DOM no encontrado.');
         return;
     }
