@@ -33,31 +33,26 @@ function mostrarMenu(tipo) {
 }
 
 function actualizarProgressBar(valor) {
-    const metaAhorro = document.getElementById("metaAhorroInput");
+    const metaAhorroInput = document.getElementById("metaAhorroInput");
 
-    if (!metaAhorro || metaAhorro.value === null || metaAhorro.value === '') {
+    if (!metaAhorroInput || metaAhorroInput.value === null || metaAhorroInput.value === '') {
         console.error('Elemento metaAhorro no encontrado o no tiene valor.');
         return;
     }
 
+    const metaAhorro = parseFloat(metaAhorroInput.value);
     const progressBar = document.getElementById('progressBar');
     if (!progressBar) {
         console.error('Elemento progressBar no encontrado.');
         return;
     }
 
-    const porcentaje = Math.min((valor / metaAhorro.value) * 100, 100);
+    const porcentaje = Math.min((valor / metaAhorro) * 100, 100);
     console.log('Progreso calculado:', porcentaje, '%');
 
-    if (progressBar.getAttribute('data-progress') !== String(Math.round(porcentaje))) {
-        progressBar.style.width = porcentaje + '%';
-        progressBar.setAttribute('data-progress', Math.round(porcentaje));
-        console.log('Progreso actualizado a:', porcentaje, '%');
-    } else {
-        console.log('El progreso ya está actualizado.');
-    }
+    progressBar.style.width = porcentaje + '%';
+    progressBar.setAttribute('data-progress', Math.round(porcentaje));
 }
-
 
 // Manejo de ahorro
 function manejarAhorro(isAddition) {
