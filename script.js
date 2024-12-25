@@ -188,10 +188,16 @@ function eliminarGuardado() {
 
 // Exportar e importar JSON
 function exportarJSON() {
+    const metaAhorro = parseFloat(document.getElementById("metaAhorro").value);
+    const ahorro = document.getElementById('ahorro').value;
+    const deficit = Math.max(metaAhorro - parseFloat(ahorro), 0).toFixed(2);
+    const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
+
     const datos = {
-        metaAhorro: parseFloat(document.getElementById("metaAhorro").value),
-        ahorro: document.getElementById('ahorro').value,
-        estadisticas: JSON.parse(localStorage.getItem('estadisticas')) || [],
+        metaAhorro,
+        ahorro,
+        deficit,
+        estadisticas,
         fecha_exportacion: new Date().toISOString()
     };
 
@@ -205,9 +211,7 @@ function exportarJSON() {
     const exportarLink = document.getElementById('jsonExportarLink');
     exportarLink.innerHTML = '';
     exportarLink.appendChild(downloadLink);
-    downloadLink.innerHTML = '<i class="fas fa-file-download"></i> Descargar JSON';
-
-    mostrarMenu('exportar');
+    downloadLink.innerHTML = `<i class="fas fa-file-download"></i> Descargar JSON`;
 }
 
 function importarJSON() {
@@ -233,7 +237,7 @@ function procesarDatosImportados(contenidoJSON) {
         if (datos.ahorro !== undefined) {
             localStorage.setItem('ahorro', JSON.stringify(datos));
             localStorage.setItem('estadisticas', JSON.stringify(datos.estadisticas || []));
-            localStorage.setItem("metaAhorro", JSON.stringify(datos.metaAhorro))
+            localStorage.setItem("metaAhorro", JSON.stringify(datos.metaAhorro));
 
             cargarProgreso();
             cerrarVentanaImportar();
@@ -246,6 +250,7 @@ function procesarDatosImportados(contenidoJSON) {
         mostrarMensaje('fa-exclamation-triangle', 'Error al procesar el archivo JSON');
     }
 }
+
 
 function cerrarVentanaImportar() {
     document.getElementById('menuImportar').style.display = 'none';
