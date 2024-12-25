@@ -121,15 +121,20 @@ function guardarProgreso() {
 }
 
 function cargarProgreso() {
-    const nuevaMeta = parseFloat(document.getElementById("metaAhorro").value);
+    const ahorroInput = document.getElementById('ahorro');
+    const faltaInput = document.getElementById('faltaPorAhorar');
     const datos = JSON.parse(localStorage.getItem('ahorro'));
 
-    if (datos) {
-        const ahorroInput = document.getElementById('ahorro');
-        ahorroInput.value = datos.ahorro;
+    if (!ahorroInput || !faltaInput) {
+        console.error('Elemento del DOM no encontrado.');
+        return;
+    }
 
-        const falta = Math.max(nuevaMeta - parseFloat(datos.ahorro), 0).toFixed(2);
-        document.getElementById('faltaPorAhorar').value = falta;
+    if (datos) {
+        ahorroInput.value = datos.ahorro || 0;
+
+        const falta = Math.max(obtenerMetaAhorro() - parseFloat(datos.ahorro), 0).toFixed(2);
+        faltaInput.value = falta;
 
         actualizarProgressBar(datos.ahorro);
         actualizarListaEstadisticas();
