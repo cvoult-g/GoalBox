@@ -6,49 +6,37 @@
     <meta name="description" content="Aplicación de gestión de ahorros personales">
     <title>Goalbox - Gestión de Ahorro</title>
     
-    <!-- Precargar recursos críticos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style-dark.css">
     
-    <!-- Iconos y scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous" defer></script>
     <script src="script.js" defer></script>
 </head>
 <body>
+
     <div id="modalInicial" class="modal" style="display: none;">
         <div class="modal-content">
-            <h2>Configura tus objetivos</h2>
-            <form id="configuracionInicial">
-                <div class="form-group">
-                    <label for="metaInicial">Meta de Ahorro ($)</label>
-                    <input type="number" id="metaInicial" min="1" step="0.01" placeholder="100.00" required>
-                </div>
-                <div class="form-group">
-                    <label for="ahorroInicial">Ahorro Actual ($)</label>
-                    <input type="number" id="ahorroInicial" min="0" step="0.01" placeholder="0.00" required>
-                </div>
-                <button type="button" class="primary-btn" onclick="guardarDatosIniciales()">Guardar</button>
-            </form>
         </div>
-    </div>    
-    
+    </div>
+
     <div class="container">
-        <h1><i class="fas fa-piggy-bank"></i> Goalbox</h1>
+        <header>
+            <h1><i class="fas fa-piggy-bank"></i> Goalbox</h1>
+        </header>
+        
         <div class="main-grid">
-            
-            <!-- Panel de Control Principal -->
             <div class="form-container">
                 <div class="menu-container">
-                    <button onclick="guardarProgreso()" id="guardarProgreso">
+                    <button onclick="guardarProgreso()" >
                         <i class="fas fa-save"></i> Guardar
                     </button>
                     <button onclick="cargarProgreso()">
                         <i class="fas fa-sync-alt"></i> Cargar
                     </button>
-                    <button onclick="eliminarGuardado()" class="primary-btn">
-                        <i class="fas fa-trash"></i> Borrar
+                    <button id="botonPrincipal" class="primary-btn">
+                        <i class="fas fa-plus"></i> Nuevo
                     </button>
                 </div>
                 
@@ -57,24 +45,20 @@
                         <label for="ahorro">Ahorro Actual ($)</label>
                         <div class="editable-field">
                             <input type="number" id="ahorro" readonly>
-                            <button type="button" id="editarAhorroBtn" onclick="habilitarEdicion('ahorro')">
+                            <button type="button" id="editarAhorroBtn" class="icon-btn primary-btn" onclick="habilitarEdicion('ahorro')">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </div>
-                    </div>                    
+                    </div>
 
                     <div class="form-group">
                         <label for="nuevoAhorro">Nuevo Ahorro ($)</label>
                         <div class="add-min">
-                            <input type="number" 
-                                   id="nuevoAhorro" 
-                                   min="0" 
-                                   step="0.01" 
-                                   placeholder="0.00">
-                            <button type="button" onclick="manejarAhorro(true)" class="primary-btn">
+                            <input type="number" id="nuevoAhorro" min="0" step="0.01" placeholder="0.00">
+                            <button type="button" onclick="manejarAhorro(true)" class="action-btn success primary-btn" >
                                 <i class="fas fa-plus"></i>
                             </button>
-                            <button type="button" onclick="manejarAhorro(false)" class="primary-btn">
+                            <button type="button" onclick="manejarAhorro(false)" class="action-btn warning primary-btn">
                                 <i class="fas fa-minus"></i>
                             </button>
                         </div>
@@ -82,14 +66,9 @@
 
                     <div class="form-group">
                         <label for="metaAhorroInput">Meta de ahorro ($)</label>
-                        <div>
-                            <input type="number" 
-                                   id="metaAhorroInput" 
-                                   min="1" 
-                                   step="0.01" 
-                                   placeholder="100.00" 
-                                   onchange="actualizarMetaAhorro()">
-                            <span id="metaAhorroTexto"></span>
+                        <div class="meta-container">
+                            <input type="number" id="metaAhorroInput" min="1" step="0.01" placeholder="100.00">
+                            <span id="metaAhorroTexto" class="meta-texto"></span>
                         </div>
                     </div>
                     
@@ -97,17 +76,16 @@
                         <div class="progress-bar" id="progressBar" data-progress="0"></div>
                     </div>
 
-                    <div class="result" id="resultado">Ingresa tu primer ahorro para comenzar</div>
+                    <div id="resultado" class="result"></div>
                 </form>
             </div>
 
-            <!-- Panel de Estadísticas -->
             <div class="stats-container">
                 <div class="menu-containerStatistics">
-                    <button onclick="mostrarMenu('exportar')">
+                    <button onclick="mostrarMenu('exportar')" class="secondary-btn">
                         <i class="fas fa-download"></i> Exportar
                     </button>
-                    <button onclick="mostrarMenu('importar')">
+                    <button onclick="mostrarMenu('importar')" class="secondary-btn">
                         <i class="fas fa-upload"></i> Importar
                     </button>
                 </div>
@@ -116,33 +94,29 @@
                     <h2>Historial de Ahorros</h2>
                     <ul id="estadisticasList"></ul>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Modal de Exportación -->
-                <div class="menu-flotante" id="menuExportar" style="display:none;">
-                    <h3>Exportar Datos</h3>
-                    <textarea id="jsonExportar" readonly></textarea>
-                    <div class="menuExportarJson">
-                        <div id="jsonExportarLink"></div>
-                        <div class="menu-buttons">
-                            <button onclick="cerrarVentanaExportar()">Cancelar</button>
-                            <button onclick="exportarJSON()" class="primary-btn">Exportar</button>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Modal de Importación -->
-                <div class="menu-flotante" id="menuImportar" style="display:none;">
-                    <h3>Importar Datos</h3>
-                    <input type="file" 
-                           id="importarArchivo" 
-                           accept=".json">
-                    <textarea id="jsonImportar" 
-                              placeholder="Pega aquí el contenido JSON..."></textarea>
-                    <div class="menu-buttons">
-                        <button onclick="cerrarVentanaImportar()">Cancelar</button>
-                        <button onclick="importarJSON()" class="primary-btn">Importar</button>
-                    </div>
-                </div>
+    <div class="menu-flotante" id="menuExportar" style="display: none;">
+        <div class="menu-content">
+            <h3>Exportar Datos</h3>
+            <textarea id="jsonExportar" readonly></textarea>
+            <div class="menu-buttons">
+                <button onclick="cerrarVentanaExportar()" class="secondary-btn">Cancelar</button>
+                <button onclick="exportarJSON()" class="primary-btn">Exportar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-flotante" id="menuImportar" style="display: none;">
+        <div class="menu-content">
+            <h3>Importar Datos</h3>
+            <input type="file" id="importarArchivo" accept=".json" class="file-input">
+            <textarea id="jsonImportar" placeholder="Pega aquí el contenido JSON..." class="import-textarea"></textarea>
+            <div class="menu-buttons">
+                <button onclick="cerrarVentanaImportar()" class="secondary-btn">Cancelar</button>
+                <button onclick="importarJSON()" class="primary-btn">Importar</button>
             </div>
         </div>
     </div>

@@ -415,14 +415,13 @@ a {
   background-color: var(--color-surface-variant);
 }
 
-
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(2px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -430,13 +429,13 @@ a {
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: var(--color-surface);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 .editable-field {
@@ -446,14 +445,36 @@ a {
 }
 
 .editable-field button {
-  background: none;
-  border: none;
-  color: #007BFF;
-  cursor: pointer;
   font-size: 1.2rem;
 }
 
-.editable-field button:hover {
-  color: #0056b3;
+.add-min {
+  display: flex;
+    gap: 8px;
 }
 
+/* Estilo para el elemento li */
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Estilo para el icono y la descripción (izquierda) */
+li span:first-child {
+  flex: 1;
+  text-align: left;
+}
+
+li small {
+  flex: 0 0 auto;
+  text-align: center;
+  margin: 0 16px;
+}
+
+li .total {
+  flex: 0 0 auto; /* Tamaño ajustado al contenido */
+  text-align: right;
+  font-weight: bold; /* Opcional: enfatizar el texto */
+  color: var(--color-primary); /* Opcional: color para resaltar */
+}

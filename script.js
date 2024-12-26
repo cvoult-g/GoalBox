@@ -18,8 +18,12 @@ function escaparHTML(texto) {
     return div.innerHTML;
 }
 
-function mostrarMensaje(icono, mensaje) {
-    document.getElementById('resultado').innerHTML = `<i class="fas ${icono}"></i> ${mensaje}`;
+function mostrarMensaje(icono, mensaje, tipo = 'info') {
+    const resultado = document.getElementById('resultado');
+    if (resultado) {
+        resultado.className = `result ${tipo}`; // Añade clase para estilos
+        resultado.innerHTML = `<i class="fas ${icono}"></i> ${mensaje}`;
+    }
 }
 
 // Sistema de notificaciones
@@ -77,63 +81,63 @@ function actualizarProgressBar(valor) {
     }
 }
 
-// Manejo de ahorros
+// Manejo de ahorros mejorado
 function manejarAhorro(isAddition) {
     const ahorroInput = document.getElementById('ahorro');
     const nuevoAhorroInput = document.getElementById('nuevoAhorro');
     const metaAhorroInput = document.getElementById('metaAhorroInput');
     
-    const ahorroActual = parseFloat(ahorroInput.value) || 0;
     const nuevoAhorro = parseFloat(nuevoAhorroInput.value);
-    const nuevaMeta = parseFloat(metaAhorroInput.value) || 0;
-
-    if (esNumeroValido(nuevoAhorro) && nuevoAhorro > 0) {
-        const nuevoTotal = isAddition ? 
-            (ahorroActual + nuevoAhorro) : 
-            Math.max(ahorroActual - nuevoAhorro, 0);
-        
-        const totalRedondeado = parseFloat(nuevoTotal.toFixed(2));
-        ahorroInput.value = totalRedondeado;
-        
-        actualizarProgressBar(totalRedondeado);
-        mostrarMensaje('fa-info-circle', 
-            `Has ahorrado $${totalRedondeado.toFixed(2)} (${((totalRedondeado / nuevaMeta) * 100).toFixed(1)}% de tu meta)`);
-        
-        guardarEnEstadisticas(totalRedondeado);
-        nuevoAhorroInput.value = '';
-    } else {
-        mostrarMensaje('fa-exclamation-triangle', 'Por favor ingresa una cantidad válida.');
+    
+    if (!esNumeroValido(nuevoAhorro) || nuevoAhorro <= 0) {
+        mostrarMensaje('fa-exclamation-triangle', 'Por favor ingresa una cantidad válida.', 'error');
+        return;
     }
-}
-
-function calcularTendencia(estadisticas) {
-    const ultimos = estadisticas.slice(-3);
-    if (ultimos.length < 2) return 'neutral';
     
-    const diferencia = ultimos[ultimos.length - 1].ahorro - ultimos[0].ahorro;
-    return diferencia > 0 ? 'positiva' : diferencia < 0 ? 'negativa' : 'neutral';
-}
-
-function calcularProyeccion(estadisticas) {
-    const ultimos = estadisticas.slice(-3);
-    if (ultimos.length < 2) return null;
+    const ahorroActual = parseFloat(ahorroInput.value) || 0;
+    const nuevaMeta = parseFloat(metaAhorroInput.value) || 0;
     
-    const cambioPromedio = (ultimos[ultimos.length - 1].ahorro - ultimos[0].ahorro) / (ultimos.length - 1);
-    return ultimos[ultimos.length - 1].ahorro + (cambioPromedio * 3);
+    if (nuevaMeta <= 0) {
+        mostrarMensaje('fa-exclamation-triangle', 'Por favor establece una meta de ahorro válida.', 'error');
+        return;
+    }
+    
+    const nuevoTotal = isAddition ? 
+        (ahorroActual + nuevoAhorro) : 
+        Math.max(ahorroActual - nuevoAhorro, 0);
+    
+    ahorroInput.value = nuevoTotal.toFixed(2);
+    actualizarProgressBar(nuevoTotal);
+    
+    const mensaje = isAddition ? 
+        `Has añadido $${nuevoAhorro.toFixed(2)} a tus ahorros.` :
+        `Has retirado $${nuevoAhorro.toFixed(2)} de tus ahorros.`;
+    
+    mostrarMensaje('fa-info-circle', mensaje, 'success');
+    guardarEnEstadisticas(nuevoTotal, isAddition ? 'depósito' : 'retiro');
+    nuevoAhorroInput.value = '';
+    guardarProgreso();
 }
 
 // Gestión de estadísticas
-function guardarEnEstadisticas(ahorro) {
-    const fecha = new Date().toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-    
+function guardarEnEstadisticas(ahorro, tipo = 'actualización') {
     const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
-    estadisticas.push({ ahorro, fecha });
+    const entrada = {
+        ahorro,
+        tipo,
+        fecha: new Date().toISOString()
+    };
+    
+    // Verificar si es una actualización válida
+    if (tipo === 'actualización' && estadisticas.length > 0) {
+        const ultimaEntrada = estadisticas[estadisticas.length - 1];
+        if (Math.abs(ahorro - ultimaEntrada.ahorro) < 0.01) {
+            mostrarMensaje('fa-exclamation-triangle', 'No se registran cambios significativos.', 'warning');
+            return;
+        }
+    }
+    
+    estadisticas.push(entrada);
     localStorage.setItem('estadisticas', JSON.stringify(estadisticas));
     actualizarListaEstadisticas();
 }
@@ -141,43 +145,42 @@ function guardarEnEstadisticas(ahorro) {
 function actualizarListaEstadisticas() {
     const estadisticas = JSON.parse(localStorage.getItem('estadisticas')) || [];
     const lista = document.getElementById('estadisticasList');
-    lista.innerHTML = ''; // Limpia la lista
-
-    estadisticas.slice(-10).reverse().forEach((item, index, arr) => {
+    if (!lista) return;
+    
+    lista.innerHTML = '';
+    
+    estadisticas.slice(-10).reverse().forEach((item, index) => {
         const li = document.createElement('li');
+        const fecha = new Date(item.fecha);
         
-        // Calcular diferencia
-        const anterior = index < arr.length - 1 ? arr[index + 1].ahorro : null;
-        const diferencia = anterior !== null ? (item.ahorro - anterior).toFixed(2) : null;
-
-        // Definir ícono y texto de diferencia
-        let icono = diferencia > 0 
-            ? '<i class="fas fa-arrow-up"></i>'
-            : diferencia < 0 
-                ? '<i class="fas fa-arrow-down"></i>'
-                : '';
-
-        // Formatear fecha
-        const fechaValida = new Date();
-        const fecha = isNaN(fechaValida.getTime())
-            ? "Fecha no disponible"
-            : fechaValida.toLocaleDateString('es-EC', {
+        const diferencia = index < estadisticas.length - 1 ?
+            item.ahorro - estadisticas[estadisticas.length - 2 - index].ahorro :
+            null;
+        
+        const icono = diferencia > 0 ? 'fa-arrow-up' :
+                     diferencia < 0 ? 'fa-arrow-down' :
+                     'fa-equals';
+        
+        li.innerHTML = `
+            <span>
+                <i class="fas ${icono}"></i>
+                ${diferencia ? `$${Math.abs(diferencia).toFixed(2)}` : "Inicio"}
+                <small>(${item.tipo})</small>
+            </span>
+            <small>${fecha.toLocaleDateString('es-ES', {
+                weekday: 'short',
                 year: 'numeric',
                 month: 'short',
-                day: 'numeric'
-            });
-
-        // Construir contenido del elemento
-        li.innerHTML = `
-            <span>${icono} ${diferencia || "Inicio de ahorro"}</span>
-            <small>${fecha}</small>
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}</small>
             <span class="total">$${item.ahorro.toFixed(2)}</span>
         `;
-
+        
         lista.appendChild(li);
     });
 }
-
 
 // Gestión de almacenamiento
 function guardarProgreso() {
@@ -509,10 +512,13 @@ window.onerror = function(mensaje, archivo, linea, columna, error) {
 function habilitarEdicion(campoId) {
     const campo = document.getElementById(campoId);
     const boton = document.getElementById('editarAhorroBtn');
-
+    const valorOriginal = campo.value;
+    
     if (campo.readOnly) {
         campo.readOnly = false;
+        campo.dataset.original = valorOriginal;
         boton.innerHTML = '<i class="fas fa-check"></i>';
+        campo.focus();
         boton.onclick = () => guardarEdicion(campoId);
     }
 }
@@ -520,32 +526,83 @@ function habilitarEdicion(campoId) {
 function guardarEdicion(campoId) {
     const campo = document.getElementById(campoId);
     const boton = document.getElementById('editarAhorroBtn');
-    const nuevoValor = parseFloat(campo.value) || 0;
-
-    // Guardar el nuevo valor en localStorage
-    const datos = JSON.parse(localStorage.getItem('ahorro'));
+    const nuevoValor = parseFloat(campo.value);
+    const valorOriginal = parseFloat(campo.dataset.original);
+    
+    if (!esNumeroValido(nuevoValor)) {
+        mostrarMensaje('fa-exclamation-triangle', 'Por favor ingresa un valor válido.', 'error');
+        campo.value = valorOriginal;
+        campo.readOnly = true;
+        boton.innerHTML = '<i class="fas fa-edit"></i>';
+        boton.onclick = () => habilitarEdicion(campoId);
+        return;
+    }
+    
+    if (Math.abs(nuevoValor - valorOriginal) < 0.01) {
+        mostrarMensaje('fa-info-circle', 'No se detectaron cambios en el valor.', 'info');
+        campo.readOnly = true;
+        boton.innerHTML = '<i class="fas fa-edit"></i>';
+        boton.onclick = () => habilitarEdicion(campoId);
+        return;
+    }
+    
+    // Guardar el nuevo valor
+    const datos = JSON.parse(localStorage.getItem('ahorro')) || {};
     datos.ahorro = nuevoValor;
     localStorage.setItem('ahorro', JSON.stringify(datos));
-
-    // Actualizar estadísticas
-    guardarEnEstadisticas(nuevoValor);
-
-    // Deshabilitar el campo y restablecer el botón
+    
+    // Actualizar estadísticas con el tipo correcto
+    guardarEnEstadisticas(nuevoValor, 'ajuste manual');
+    
     campo.readOnly = true;
     boton.innerHTML = '<i class="fas fa-edit"></i>';
     boton.onclick = () => habilitarEdicion(campoId);
-
+    
     actualizarMetaAhorro();
+    mostrarMensaje('fa-check-circle', 'Valor actualizado correctamente.', 'success');
+}
+
+function actualizarBotonPrincipal() {
+    const botonPrincipal = document.getElementById('botonPrincipal');
+    if (!botonPrincipal) return;
+    
+    const hayDatos = Boolean(localStorage.getItem('ahorro'));
+    
+    botonPrincipal.innerHTML = hayDatos ? 
+        '<i class="fas fa-trash"></i> Borrar' : 
+        '<i class="fas fa-plus"></i> Nuevo';
+    
+    botonPrincipal.onclick = hayDatos ? eliminarGuardado : mostrarModalInicial;
+}
+
+function mostrarModalInicial() {
+    const modal = document.getElementById('modalInicial');
+    modal.querySelector('.modal-content').innerHTML = `
+        <h2>Configura tus objetivos</h2>
+        <form id="configuracionInicial">
+            <div class="form-group">
+                <label for="metaInicial">Meta de Ahorro ($)</label>
+                <input type="number" id="metaInicial" min="1" step="0.01" placeholder="100.00" required>
+            </div>
+            <div class="form-group">
+                <label for="ahorroInicial">Ahorro Actual ($)</label>
+                <input type="number" id="ahorroInicial" min="0" step="0.01" placeholder="0.00" required>
+            </div>
+            <div class="button-group">
+                <button type="button" class="primary-btn" onclick="guardarDatosIniciales()">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+                <button onclick="mostrarMenu('importar')" class="secondary-btn">
+                    <i class="fas fa-upload"></i> Importar
+                </button>
+            </div>
+        </form>
+    `;
+    modal.style.display = 'flex';
 }
 
 function verificarDatosIniciales() {
     const datos = JSON.parse(localStorage.getItem('ahorro'));
-    
-    if (!datos) {
-        // Si no hay datos, mostrar el formulario inicial
-        document.getElementById('modalInicial').style.display = 'flex';
-    } else {
-        // Si ya hay datos, carga el progreso
-        cargarProgreso();
-    }
+    actualizarBotonPrincipal();
+    if (datos) cargarProgreso();
 }
